@@ -19,6 +19,17 @@ Este projeto foi desenvolvido durante o segundo semestre da faculdade como parte
 
 Contribuições são bem-vindas! Sinta-se à vontade para propor melhorias, correções de bugs ou novas funcionalidades através de pull requests.
 
+## fotos 
+
+(algumas imagem do projeto )
+
+![image](https://github.com/StellaKarolinaNunes/JogoVeia/assets/118007989/9799cbdf-64e7-4b25-87a4-ab0e3ac4afec)
+
+![image](https://github.com/StellaKarolinaNunes/JogoVeia/assets/118007989/a9863448-3f8c-4cbd-b817-70d7b37b08b2)
+
+![image](https://github.com/StellaKarolinaNunes/JogoVeia/assets/118007989/478f30e3-c4f1-4550-96bc-3e7dc1df17c9)
+
+
 ## Autor
 
 [Stella Karolina]
