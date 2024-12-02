@@ -36,4 +36,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para propor melhorias, corr
 
 ---
 
-Espero que essa descrição atenda às suas expectativas!
+
