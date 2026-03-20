@@ -4,10 +4,6 @@
 #include "file_manager.h"
 #include "menu.h"
 
-RankingEntry ranking[MAX_RANKING_ENTRIES];
-int num_ranking_entries = 0;
-int tema_ativo = 0;
-
 void configurarSistema(void) {
     setlocale(LC_ALL, "");
     system(SET_TITLE);
@@ -19,12 +15,15 @@ int main() {
     GameState current_game_state = {0};
     strcpy(current_game_state.ultimoVencedor, "Nenhum");
     
+    carregarConfiguracoes();
     configurarSistema();
+    carregarTemas();
     carregarRanking();
     
     menuPrincipal(&current_game_state);
     
     salvarRanking();
+    salvarConfiguracoes();
     
     puts("");
 #ifndef _WIN32

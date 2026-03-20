@@ -7,4 +7,4 @@ void aplicarTema(int tema);
 void apresentarTema(int tema);
 void escolherTema(void);
 
-#endif // THEME_H
+#endif

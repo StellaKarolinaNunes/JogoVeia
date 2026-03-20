@@ -1,0 +1,10 @@
+# Doxyfile for Jogo da Veia
+PROJECT_NAME           = "Jogo da Veia"
+PROJECT_NUMBER         = "4.0"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = .
+RECURSIVE              = YES
+GENERATE_LATEX         = NO
+GENERATE_HTML          = YES
+EXTRACT_ALL            = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES

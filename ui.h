@@ -8,8 +8,16 @@ void exibirTituloInstrucoes(void);
 void exibirTituloCreditos(void);
 void exibirTituloTemas(void);
 void exibirTituloSaindo(void);
+void exibirTituloReferencia(void);
+void exibirTituloDados(void);
+void exibirTituloModoJogo(void);
+void exibirTituloDeletar(void);
+void exibirTituloRanking(void);
 void exibirMenuCapa(void);
-void print_square(char value, int row, int col, const int* highlight_indices);
-void exibirInterfaceJogo(const GameState* game, const int* winning_line_indices);
 
-#endif // UI_H
+void exibirInterfaceJogo(const GameState* game, const int* winning_line_indices, const char* mensagemInfo);
+void animarVitoria(const GameState* game, const int* winning_line_indices); // NOVO
+void exibirTrofeu(const char* vencedor); // NOVO
+void exibirConquista(const char* titulo); // NOVO
+
+#endif

@@ -1,0 +1,34 @@
+--- jogo da veia - Salvo ---
+Nome do Salvamento: teste
+Versão do Jogo: 4.0
+Data e Hora: 20260320_141706
+Modo: 0
+Dificuldade: 0
+
+--- Jogadores ---
+Jogador X: jogador1
+Jogador O: jogador2
+
+--- Placar ---
+Vitorias X: 5
+Vitorias O: 2
+Empates: 1
+
+--- Último Vencedor ---
+Vencedor: jogador2
+
+--- Estado do Jogo ---
+Hist X: -1 -1 -1
+Hist O: -1 -1 -1
+Num Jogadas X: 0
+Num Jogadas O: 0
+--- Tabuleiro ---
+ X | O | X 
+---+---+---
+ O | O | X 
+---+---+---
+ X | O | 9 
+Jogador Atual: O
+
+--- Checksum ---
+3266573195

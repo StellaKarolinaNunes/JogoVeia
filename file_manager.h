@@ -4,7 +4,7 @@
 #include "config.h"
 
 bool criarDiretorioSaves(void);
-void salvarJogo(const GameState* game);
+void salvarJogo(GameState* game);
 bool carregarJogo(GameState* game);
 int listarSaves(SaveInfo* saves_array, int max_saves);
 void funcaoDeletarJogo(void);
@@ -17,5 +17,8 @@ void carregarRanking(void);
 void salvarRanking(void);
 void atualizarRanking(const char* player_name, int result_type);
 int compararRankingEntries(const void* a, const void* b);
+
+void salvarConfiguracoes(void);
+void carregarConfiguracoes(void);
 
 #endif // FILE_MANAGER_H
