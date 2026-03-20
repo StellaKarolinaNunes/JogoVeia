@@ -20,18 +20,33 @@
 ---
 
 ##  Introdução
-Este projeto foi desenvolvido durante o segundo semestre da faculdade como parte da disciplina de Programação 1. O objetivo era ampliar os conceitos de programação aprendidos até a data, aplicando-os na criação de um jogo da veia em Linguagem C.
+Este projeto foi desenvolvido durante o segundo semestre da faculdade como parte da disciplina de Programação 1. O objetivo foi consolidar e ampliar os conceitos de programação aprendidos até o momento, por meio da criação de um jogo da velha utilizando a linguagem C.
 
 ---
 
-## Por que jogo da veia?
-Desenvolver um jogo interativo em Linguagem C++ como projeto prático da disciplina de Programação 1, durante o segundo semestre do curso de Ciência da Computação, com o objetivo de aplicar e consolidar os conceitos aprendidos ao longo das aulas. A proposta do projeto é criar um jogo simples, como Jogo da Velha, Pedra-Papel-Tesoura ou outro jogo baseado em turnos, utilizando os fundamentos de programação. O programa deve implementar funcionalidades essenciais, como entrada de dados e validação das escolhas dos usuários, além de utilizar estruturas de controle de fluxo, como if, while e for. É necessário que o projeto apresente mensagens interativas que garantam uma experiência amigável ao jogador, explicando as regras do jogo, notificando erros e exibindo os resultados ao final de cada partida (como vitória, derrota ou empate). O código deve demonstrar modularidade por meio do uso de funções e manipulação de arrays, organizando e simplificando o programa.
+## Qual o Problema? 
+Desenvolver um jogo interativo em linguagem C como projeto prático da disciplina de Programação 1, com o objetivo de aplicar e reforçar os conceitos fundamentais estudados ao longo das aulas.
+
+A proposta consiste na criação de um jogo simples baseado em turnos, como o jogo da velha, utilizando conceitos essenciais de programação, tais como:
+
+* Entrada e validação de dados do usuário
+* Estruturas de controle de fluxo (if, while, for)
+* Modularização por meio de funções
+* Manipulação de arrays
+*e entre outras funções
 
 <br>
 
 
 ## A Solução
-A solução desenvolvida utiliza uma matriz 3x3 de caracteres para representar o tabuleiro do jogo. O programa foi estruturado de forma modular, com funções dedicadas para a exibição do tabuleiro, validação de jogadas e verificação de condições de vitória ou empate. O fluxo principal utiliza estruturas de repetição para alternar os turnos entre os jogadores até que o jogo seja finalizado, garantindo uma experiência interativa e robusta.
+A solução desenvolvida utiliza uma matriz 3x3 de caracteres para representar o tabuleiro do jogo. O sistema foi estruturado de forma modular, com funções específicas responsáveis por:
+
+* Exibir o tabuleiro
+* Validar as jogadas dos jogadores
+* Controlar os turnos
+* Verificar condições de vitória ou empate
+
+O fluxo principal do programa utiliza estruturas de repetição para alternar os turnos entre os jogadores até que uma condição de término seja atingida. Dessa forma, o jogo proporciona uma experiência interativa, organizada e eficiente, aplicando na prática os principais conceitos da linguagem C.
 
  <br>
 
