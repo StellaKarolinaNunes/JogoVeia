@@ -278,6 +278,7 @@ void salvarJogo(GameState* game) {
     fecharArquivo(file);
     strncpy(game->loaded_filename, filename, MAX_LINE_BUFFER-1);
     
+    printf("\a"); // Beep de sucesso
     printf("Jogo salvo com sucesso!\n");
     printf("Pressione ENTER para continuar...\n\n");
     esperarEnter();
@@ -587,6 +588,7 @@ bool carregarJogo(GameState* game) {
     
     strcpy(game->loaded_filename, selected_filename);
     
+    printf("\a"); // Beep de sucesso
     printf("Jogo carregado com sucesso de '%s'!\n", selected_filename);
     printf("Placar carregado: %s (X): %d | %s (O): %d | Empates: %d\n", 
            game->nomeJogadorX, game->placarX, game->nomeJogadorO, game->placarO, game->empates);

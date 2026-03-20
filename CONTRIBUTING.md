@@ -1,6 +1,6 @@
 # Guia de Contribuição
 
-Obrigado por considerar contribuir para o Jogo da Velha em C. Este documento fornece diretrizes para garantir que o processo de contribuição seja produtivo e eficiente para todos os envolvidos.
+Obrigado por considerar contribuir para o Jogo da  veia em C. Este documento fornece diretrizes para garantir que o processo de contribuição seja produtivo e eficiente para todos os envolvidos.
 
 ## Código de Conduta
 

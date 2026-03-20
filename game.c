@@ -354,10 +354,16 @@ int minimax(GameState* game, int depth, bool isMaximizing, char ai_char, char op
 
 int obterJogadaIA(GameState* game) {
     if (game->ai_difficulty == DIFFICULTY_EASY) {
-        if (game->tabuleiro[1][1] != 'X' && game->tabuleiro[1][1] != 'O') return 5;
+        int disponiveis[9];
+        int num_disponiveis = 0;
         for (int pos = 1; pos <= 9; pos++) {
-            int r = (pos-1)/3; int c = (pos-1)%3;
-            if (game->tabuleiro[r][c] != 'X' && game->tabuleiro[r][c] != 'O') return pos;
+            int r = (pos-1)/3, c = (pos-1)%3;
+            if (game->tabuleiro[r][c] != 'X' && game->tabuleiro[r][c] != 'O') {
+                disponiveis[num_disponiveis++] = pos;
+            }
+        }
+        if (num_disponiveis > 0) {
+            return disponiveis[rand() % num_disponiveis];
         }
     }
 
@@ -517,7 +523,7 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
                 break;
             } else if (game->current_mode != MODE_INFINITE && jogadasFeitas == 9) {
                 exibirInterfaceJogo(game, NULL, "PARTIDA CONCLUÍDA!");
-                printf("\a");
+                printf("\a"); // Beep de empate
                 printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
                 printf("║                                       FIM DE JOGO CARREGADO!                                         ║\n");
                 printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");

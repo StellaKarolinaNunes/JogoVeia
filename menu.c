@@ -73,7 +73,7 @@ void funcaoReferencia(void) {
     printf("║    Fontes utilizadas para estudo do jogo da veia:                                                    ║\n");
     printf("║                                                                                                      ║\n");
     printf("║  • Wikipedia - jogo da veia                                                                          ║\n");
-    printf("║    https://pt.wikipedia.org/wiki/Jogo_da_velha                                                         ║\n");
+    printf("║    https://pt.wikipedia.org/wiki/Jogo_da_ veia                                                         ║\n");
     printf("║                                                                                                      ║\n");
     printf("║  • Wikipedia - Tic-Tac-Toe (versão internacional)                                                     ║\n");
     printf("║    https://en.wikipedia.org/wiki/Tic-tac-toe                                                          ║\n");

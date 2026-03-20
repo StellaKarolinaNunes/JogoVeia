@@ -20,14 +20,14 @@
 ---
 
 ##  Introdução
-Este projeto foi desenvolvido durante o segundo semestre da faculdade como parte da disciplina de Programação 1. O objetivo foi consolidar e ampliar os conceitos de programação aprendidos até o momento, por meio da criação de um jogo da velha utilizando a linguagem C.
+Este projeto foi desenvolvido durante o segundo semestre da faculdade como parte da disciplina de Programação 1. O objetivo foi consolidar e ampliar os conceitos de programação aprendidos até o momento, por meio da criação de um jogo da  veia utilizando a linguagem C.
 
 ---
 
 ## Qual o Problema? 
 Desenvolver um jogo interativo em linguagem C como projeto prático da disciplina de Programação 1, com o objetivo de aplicar e reforçar os conceitos fundamentais estudados ao longo das aulas.
 
-A proposta consiste na criação de um jogo simples baseado em turnos, como o jogo da velha, utilizando conceitos essenciais de programação, tais como:
+A proposta consiste na criação de um jogo simples baseado em turnos, como o jogo da  veia, utilizando conceitos essenciais de programação, tais como:
 
 * Entrada e validação de dados do usuário
 * Estruturas de controle de fluxo (if, while, for)
@@ -75,45 +75,53 @@ O fluxo principal do programa utiliza estruturas de repetição para alternar os
 ## Layout da Aplicação 
 
 <p align="center">
-  <img src="image.png" width="30%">
-  <img src="image-1.png" width="30%">
-  <img src="image-2.png" width="30%">
+  <img src="./assets/image-1.png" width="45%">
+  <img src="./assets/image-2.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-3.png" width="30%">
-  <img src="image-4.png" width="30%">
-  <img src="image-5.png" width="30%">
+  <img src="./assets/image-3.png" width="45%">
+  <img src="./assets/image-4.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-6.png" width="30%">
-  <img src="image-7.png" width="30%">
-  <img src="image-8.png" width="30%">
+  <img src="./assets/image-5.png" width="45%">
+  <img src="./assets/image-6.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-9.png" width="45%">
-  <img src="image-10.png" width="45%">
+  <img src="./assets/image-7.png" width="45%">
+  <img src="./assets/image-8.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-12.png" width="30%">
-  <img src="image-13.png" width="30%">
-  <img src="image-14.png" width="30%">
+  <img src="./assets/image-9.png" width="45%">
+  <img src="./assets/image-10.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-15.png" width="30%">
-  <img src="image-16.png" width="30%">
-  <img src="image-17.png" width="30%">
+  <img src="./assets/image-11.png" width="45%">
+  <img src="./assets/image-12.png" width="45%">
 </p>
 
 <p align="center">
-  <img src="image-18.png" width="30%">
-  <img src="image-19.png" width="30%">
+  <img src="./assets/image-13.png" width="45%">
+  <img src="./assets/image-14.png" width="45%">
 </p>
 
+<p align="center">
+  <img src="./assets/image-15.png" width="45%">
+  <img src="./assets/image-16.png" width="45%">
+</p>
+
+<p align="center">
+  <img src="./assets/image-17.png" width="45%">
+  <img src="./assets/image-18.png" width="45%">
+</p>
+
+<p align="center">
+  <img src="./assets/image-19.png" width="60%">
+</p>
 
  <br>
 
@@ -137,10 +145,10 @@ jogo_veia/
 ├── game.c                      # Lógica do jogo
 ├── game.h                      # Lógica do jogo
 ├── globals.c                   # Variáveis globais
-├── jogo_velha                  # Executável do jogo
+├── jogo_ veia                  # Executável do jogo
 ├── main.c                      # Função principal
-├── maintenace.c                # Manutenção do jogo
-├── maintenace.h                # Manutenção do jogo
+├── maintenance.c               # Manutenção do jogo
+├── maintenance.h               # Manutenção do jogo
 ├── menu.c                      # Menu do jogo
 ├── menu.h                      # Menu do jogo
 ├── ranking.dat                 # Ranking de jogadores
@@ -157,6 +165,20 @@ jogo_veia/
 ```
 
  <br>
+
+### Manutenibilidade e Compatibilidade
+
+*   **Problema:** Incompatibilidade de nomes de arquivos entre Windows e Linux (Case Sensitivity).
+*   **Causa:** O desenvolvedor original utilizou CamelCase em alguns locais e lower_case em outros, o que causava erros de compilação em sistemas Linux.
+*   **Solução:** Padronização rigorosa para `lower_case` em todos os arquivos fonte (.c) e cabeçalhos (.h).
+*   **Problema:** Tabuleiro desalinhado após a aplicação de temas coloridos.
+*   **Causa:** Os códigos de escape ANSI possuem largura zero no terminal, mas ocupam espaço na contagem de strings do C.
+*   **Solução:** Implementação de uma largura fixa para cada célula do tabuleiro, independente da presença de cores.
+*   **Problema:** A IA era previsível e permitia vitórias fáceis.
+*   **Causa:** Algoritmo baseado apenas em condições `if/else` superficiais.
+*   **Solução:** Introdução do algoritmo **Minimax** para a dificuldade "Difícil", tornando-a imbatível matematicamente através da exploração de todas as possibilidades de jogo.
+
+<br>
 
 ##  Instalação
 
@@ -183,13 +205,13 @@ jogo_veia/
 ####  1. Clone o repositório
 
 ```bash
-git clone https://github.com/StellaKarolina/jogo_velha.git
+git clone https://github.com/StellaKarolina/jogo_ veia.git
 ```
 
 ####  2. Acesse pasta
 
 ```bash
-cd jogo_velha
+cd jogo_ veia
 ```
 
 ####  3. Compile o código Usando o Script de Compilação (Recomendado)
@@ -202,8 +224,8 @@ chmod +x compile.sh    # Dá permissão de execução (se necessário)
 ####  4. Manualmente via Terminal (Caso queira saber o comando exato)
 
 ```bash
-gcc *.c -o jogo_velha   # Compila o projeto
-./jogo_velha            # Executa o projeto
+gcc *.c -o jogo_ veia   # Compila o projeto
+./jogo_ veia            # Executa o projeto
 ```
 
 ### 5. Scripts Disponíveis

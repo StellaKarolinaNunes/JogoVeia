@@ -4,13 +4,13 @@
 mkdir -p build
 
 # 2. Compila o jogo jogando o executável para dentro da pasta build
-gcc main.c globals.c game.c maintenance.c utils.c theme.c ui.c file_manager.c menu.c -o build/jogo_velha -lm
+gcc main.c globals.c game.c maintenance.c utils.c theme.c ui.c file_manager.c menu.c -o build/jogo_ veia -lm
 
 if [ $? -eq 0 ]; then
     echo "Jogo compilado com sucesso!"
     
     # 3. Executa o jogo a partir da pasta raiz para manter os caminhos (saves, config)
-    ./build/jogo_velha
+    ./build/jogo_ veia
     
     # 4. Ao fechar o jogo, limpa arquivos temporários e tenta remover arquivos fuse ocultos
     echo "Limpando arquivos temporários..."

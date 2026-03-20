@@ -32,8 +32,13 @@ int lerInteiro(const char* mensagem, int min, int max) {
             continue;
         }
 
-        // Remover \n se existir
-        buffer[strcspn(buffer, "\n")] = 0;
+        // Remover \n se existir, ou limpar buffer se a entrada for maior que o esperado
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] == '\n') {
+            buffer[len - 1] = '\0';
+        } else {
+            limparBufferEntrada();
+        }
 
         if (buffer[0] == '\0') continue;
 

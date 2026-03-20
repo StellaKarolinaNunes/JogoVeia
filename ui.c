@@ -261,25 +261,26 @@ void animarVitoria(const GameState* game, const int* winning_line_indices) {
 }
 
 void exibirTrofeu(const char* vencedor) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    printf("\n\n");
-    printf("                      ___________   \n");
-    printf("                     '._==_==_=_.'  \n");
-    printf("                     .-\\:      /-.  \n");
-    printf("                    | (|:.     |) | \n");
-    printf("                     '-|:.     |-'  \n");
-    printf("                       \\::.    /    \n");
-    printf("                        '::. .'     \n");
-    printf("                          ) (       \n");
-    printf("                        _.' '._     \n");
-    printf("                       `-------`    \n\n");
+    printf("\a"); // Alerta sonoro de troféu
+    exibirTituloPrincipal();
+    printf("\n");
+    printf("                                       _________________                                       \n");
+    printf("                                      |                 |                                      \n");
+    printf("                                      |   -----------   |                                      \n");
+    printf("                                      |  |  JOGO DA  |  |                                      \n");
+    printf("                                      |  |    veia   |  |                                      \n");
+    printf("                                      |   -----------   |                                      \n");
+    printf("                                      |_________________|                                      \n");
+    printf("                                            |     |                                            \n");
+    printf("                                            |     |                                            \n");
+    printf("                                       _____|_____|_____                                       \n");
+    printf("                                      |                 |                                      \n");
     printf("               🏆 CAMPEÃO DO TORNEIO: %s 🏆\n\n", vencedor);
     esperarEnter();
 }
 
 void exibirConquista(const char* titulo) {
-    printf("\n  ✨ NOVA CONQUISTA DESBLOQUEADA: [ %s ] ✨\n", titulo);
-    printf("\a"); // Beep de conquista
-    delaySimples(1000);
+    printf("\a"); // Alerta sonoro de conquista
+    printf("\n [CONQUISTA DESBLOQUEADA: %s]\n\n", titulo);
+    esperarEnter();
 }
