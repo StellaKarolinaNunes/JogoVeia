@@ -40,7 +40,7 @@ void executarReplay(const GameState* game) {
         replay_state.tabuleiro[r][c] = curr_p;
         char replayMsg[100];
         snprintf(replayMsg, sizeof(replayMsg), "Reproduzindo jogada %d/%d (Jogador %c na posição %d)", i+1, game->total_moves_count, curr_p, pos);
-        exibirInterfaceJogo(&replay_state, NULL, replayMsg);
+        exibirInterfaceJogo(&replay_state, NULL, replayMsg, -1);
         printf("\n   Reproduzindo jogada %d/%d (Jogador %c na posição %d)...\n", i+1, game->total_moves_count, curr_p, pos);
         delaySimples(1200);
         curr_p = (curr_p == 'X') ? 'O' : 'X';
@@ -146,168 +146,122 @@ void alternarJogador(GameState* game) {
     game->jogadorAtual = (game->jogadorAtual == 'X') ? 'O' : 'X';
 }
 
-void obterNomesJogadores(GameState* game, GameMode mode) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
-
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                  --- Configuração de Jogadores ---                                   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                                      ║\n");
-    lerString("║ Digite o nome do Jogador 1: ", game->nomeJogadorX, MAX_NOME_JOGADOR);
-    if (mode == MODE_PLAYER_VS_PLAYER || mode == MODE_INFINITE) {
-        lerString("║ Digite o nome do Jogador 2: ", game->nomeJogadorO, MAX_NOME_JOGADOR);
-    } else {
-        strcpy(game->nomeJogadorO, "IA");
-    }
-    printf("║                                                                                                      ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
+bool obterNomesJogadores(GameState* game, GameMode mode) {
+    bool confirmados = false;
     
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                     --- Nomes Registrados ---                                        ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  Jogador X: %-85s║\n", game->nomeJogadorX);
-    printf("║  Jogador O: %-85s║\n", game->nomeJogadorO);
-    printf("║                                                                                                      ║\n");
-    printf("║   Pressione Enter para continuar...                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    esperarEnter();
+    while (!confirmados) {
+        exibirTelaConfigurarJogadores(1);
+        lerString("", game->nomeJogadorX, MAX_NOME_JOGADOR);
+        // If empty, let's just use a default name
+        if (strlen(game->nomeJogadorX) == 0) strcpy(game->nomeJogadorX, "Jogador 1");
+        
+        if (mode == MODE_PLAYER_VS_PLAYER || mode == MODE_INFINITE) {
+            exibirTelaConfigurarJogadores(2);
+            lerString("", game->nomeJogadorO, MAX_NOME_JOGADOR);
+            if (strlen(game->nomeJogadorO) == 0) strcpy(game->nomeJogadorO, "Jogador 2");
+        } else {
+            strcpy(game->nomeJogadorO, "IA");
+        }
+        
+        int selected_confirm = 0;
+        bool confirm_chosen = false;
+        
+        while (!confirm_chosen) {
+            exibirTelaConfirmarJogadores(game->nomeJogadorX, game->nomeJogadorO, selected_confirm);
+            KeyCode tecla = lerTeclaMenu();
+            
+            switch (tecla) {
+                case KEY_UP:
+                    if (selected_confirm == 0) selected_confirm = 2;
+                    else selected_confirm--;
+                    break;
+                case KEY_DOWN:
+                    if (selected_confirm == 2) selected_confirm = 0;
+                    else selected_confirm++;
+                    break;
+                case KEY_ENTER:
+                    confirm_chosen = true;
+                    break;
+                case KEY_Q:
+                case KEY_ESC:
+                    selected_confirm = 2; // CANCELAR E VOLTAR
+                    confirm_chosen = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        if (selected_confirm == 0) {
+            confirmados = true;
+        } else if (selected_confirm == 1) {
+            confirmados = false; // loops again to edit names
+        } else if (selected_confirm == 2) {
+            return false; // Cancels and returns to menu
+        }
+    }
+    
+    return true;
 }
 
 void sortearPrimeiroJogador(GameState* game) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
+    int dadoJogador1, dadoJogador2;
+    do {
+        dadoJogador1 = (rand() % 6) + 1;
+        dadoJogador2 = (rand() % 6) + 1;
+    } while (dadoJogador1 == dadoJogador2);
     
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    char sorteioTitle[] = "Sorteando o primeiro jogador...";
-    int vlenST = visible_strlen(sorteioTitle);
-    int leftST = (100 - vlenST) / 2;
-    int rightST = 100 - vlenST - leftST;
-    printf("║");
-    for (int k = 0; k < leftST; k++) putchar(' ');
-    printf("%s", sorteioTitle);
-    for (int k = 0; k < rightST; k++) putchar(' ');
-    printf("║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                                      ║\n");
-    const char* spinner = "|/-\\";
-    for (int i = 0; i < 20; i++) {
-        char spinnerLine[100];
-        snprintf(spinnerLine, sizeof(spinnerLine), "             Sorteando o primeiro jogador... %c", spinner[i % 4]);
-        int vlenSL = visible_strlen(spinnerLine);
-        printf("\r║%-100s║", spinnerLine);
-        fflush(stdout);
-        delaySimples(100);
-    }
-    printf("\r║                                                                                                      ║\n");
-    printf("║                                                                                                      ║\n");
-    int sorteado = rand() % 2;
+    int sorteado = (dadoJogador1 > dadoJogador2) ? 0 : 1; // 0 -> JogadorX, 1 -> JogadorO
     char* nomeVencedorSorteio = (sorteado == 0) ? game->nomeJogadorX : game->nomeJogadorO;
-    char sorteioMsg[100];
-    snprintf(sorteioMsg, sizeof(sorteioMsg), "O jogador %s ganhou o sorteio!", nomeVencedorSorteio);
-    int vlenS = visible_strlen(sorteioMsg);
-    int leftS = (100 - vlenS) / 2;
-    int rightS = 100 - vlenS - leftS;
-    printf("║");
-    for (int k = 0; k < leftS; k++) putchar(' ');
-    printf("%s", sorteioMsg);
-    for (int k = 0; k < rightS; k++) putchar(' ');
-    printf("║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   Pressione Enter para continuar...                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    esperarEnter();
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
-
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    char vmsg[100];
-    snprintf(vmsg, sizeof(vmsg), "O jogador %s ganhou o sorteio!", nomeVencedorSorteio);
-    int vlenV = visible_strlen(vmsg);
-    int leftV = (100 - vlenV) / 2;
-    int rightV = 100 - vlenV - leftV;
-    printf("║");
-    for(int k=0; k<leftV; k++) putchar(' ');
-    printf("%s", vmsg);
-    for(int k=0; k<rightV; k++) putchar(' ');
-    printf("║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   Pressione Enter para continuar...                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    esperarEnter();
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
-
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    char parabensM[100];
-    snprintf(parabensM, sizeof(parabensM), "Parabéns %s!", nomeVencedorSorteio);
-    int vlenP = visible_strlen(parabensM);
-    int leftP = (100 - vlenP) / 2;
-    int rightP = 100 - vlenP - leftP;
-    printf("║");
-    for(int k=0; k<leftP; k++) putchar(' '); printf("%s", parabensM); for(int k=0; k<rightP; k++) putchar(' ');
-    printf("║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║ Para esta rodada, escolha seu símbolo:                                                               ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║ 1. Jogar como 'X'                                                                                    ║\n");
-    printf("║ 2. Jogar como 'O'                                                                                    ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    int escolhaSimbolo;
+    
+    int selected = 0;
+    bool confirm_chosen = false;
+    int escolhaSimbolo = 1;
+    
     if (sorteado == 1 && strcmp(game->nomeJogadorO, "IA") == 0) {
-        escolhaSimbolo = (rand() % 2) + 1;
-        printf("║ A IA escolheu jogar como '%s'.                                                                      ║\n", (escolhaSimbolo == 1) ? "X" : "O");
-        delaySimples(1500);
+        exibirTelaSorteio(dadoJogador1, dadoJogador2, game->nomeJogadorX, game->nomeJogadorO, nomeVencedorSorteio, -1);
+        esperarEnter();
+        escolhaSimbolo = (rand() % 2) + 1; // IA automatically picks 1 or 2
     } else {
-        escolhaSimbolo = lerInteiro("Escolha uma opção: ", 1, 2);
+        while (!confirm_chosen) {
+            exibirTelaSorteio(dadoJogador1, dadoJogador2, game->nomeJogadorX, game->nomeJogadorO, nomeVencedorSorteio, selected);
+            KeyCode tecla = lerTeclaMenu();
+            
+            switch (tecla) {
+                case KEY_UP:
+                    if (selected == 0) selected = 1;
+                    else selected--;
+                    break;
+                case KEY_DOWN:
+                    if (selected == 1) selected = 0;
+                    else selected++;
+                    break;
+                case KEY_ENTER:
+                    escolhaSimbolo = selected + 1;
+                    confirm_chosen = true;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+    
     char tempNome[MAX_NOME_JOGADOR];
-    if (escolhaSimbolo == 1) {
-        if (sorteado == 1) {
+    if (escolhaSimbolo == 1) { // Jogar com X
+        if (sorteado == 1) { // JogadorO won and chose X
             strcpy(tempNome, game->nomeJogadorX);
             strcpy(game->nomeJogadorX, game->nomeJogadorO);
             strcpy(game->nomeJogadorO, tempNome);
         }
-    } else {
-        if (sorteado == 0) {
+    } else { // Jogar com O
+        if (sorteado == 0) { // JogadorX won and chose O
             strcpy(tempNome, game->nomeJogadorX);
             strcpy(game->nomeJogadorX, game->nomeJogadorO);
             strcpy(game->nomeJogadorO, tempNome);
         }
     }
+    
     game->jogadorAtual = 'X';
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloPrincipal();
-
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    char titleStartRound[] = "--- Início da Rodada ---";
-    int vlenTSR = visible_strlen(titleStartRound);
-    int leftTSR = (100 - vlenTSR) / 2;
-    int rightTSR = 100 - vlenTSR - leftTSR;
-    printf("║");
-    for (int k = 0; k < leftTSR; k++) putchar(' ');
-    printf("%s", titleStartRound);
-    for (int k = 0; k < rightTSR; k++) putchar(' ');
-    printf("║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  Jogador X: %-85s║\n", game->nomeJogadorX);
-    printf("║  Jogador O: %-85s║\n", game->nomeJogadorO);
-    printf("║                                                                                                      ║\n");
-    printf("║ O jogador %s (X) fará a primeira jogada.                                                             ║\n", game->nomeJogadorX);
-    printf("║                                                                                                      ║\n");
-    printf("║   Pressione Enter para continuar...                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    esperarEnter();
 }
 
 int minimax(GameState* game, int depth, bool isMaximizing, char ai_char, char opponent_char, int alpha, int beta) {
@@ -425,59 +379,90 @@ int obterJogadaIA(GameState* game) {
 void funcaoJogar(GameState* game, bool is_resumed_game) {
     bool jogarNovamente = true;
     if (!is_resumed_game) {
-        limparTela();
-        aplicarTema(tema_ativo);
-        exibirTituloModoJogo();
-              printf("\n");
-        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║                                       MODO DE JOGO                                                   ║\n");
-        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ 1. Jogador vs Jogador                                                                                ║\n");
-        printf("║ 2. Jogador vs IA                                                                                     ║\n");
-        printf("║ 3. Modo Infinito (Apenas 3 peças no tabuleiro)                                                       ║\n");
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-        int mode_choice = lerInteiro("Escolha o modo de jogo: ", 1, 3);
-        if (mode_choice == 1) game->current_mode = MODE_PLAYER_VS_PLAYER;
-        else if (mode_choice == 2) {
+        int selected_mode = 0; // Starts at 0: JOGADOR VS JOGADOR
+        bool mode_chosen = false;
+        
+        while (!mode_chosen) {
+            exibirTelaEscolherModoJogo(selected_mode);
+            KeyCode tecla = lerTeclaMenu();
+            
+            switch (tecla) {
+                case KEY_UP:
+                    if (selected_mode == 0) selected_mode = 3;
+                    else selected_mode--;
+                    break;
+                case KEY_DOWN:
+                    if (selected_mode == 3) selected_mode = 0;
+                    else selected_mode++;
+                    break;
+                case KEY_ENTER:
+                    mode_chosen = true;
+                    break;
+                case KEY_Q:
+                case KEY_ESC:
+                case KEY_0:
+                    return; // Retorna ao Menu Principal
+                default:
+                    break;
+            }
+        }
+        
+        // selected_mode corresponds to indices 0: PVP, 1: PVE, 2: INFINITE, 3: VOLTAR
+        if (selected_mode == 3) {
+            return; // Voltar ao Menu Principal
+        } else if (selected_mode == 0) {
+            game->current_mode = MODE_PLAYER_VS_PLAYER;
+        } else if (selected_mode == 1) {
+            int diff_choice = perguntarDificuldadeIA();
+            if (diff_choice == -1) {
+                return; // Voltar ao Menu Principal
+            }
             game->current_mode = MODE_PLAYER_VS_AI;
-            limparTela();
-            aplicarTema(tema_ativo);
-            printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-            printf("║                                      --- DIFICULDADE IA ---                                          ║\n");
-            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-            printf("║ 1. Fácil (Movimentos Aleatórios)                                                                     ║\n");
-            printf("║ 2. Médio (Estratégico)                                                                               ║\n");
-            printf("║ 3. Difícil (Imbatível)                                                                               ║\n");
-            printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-            int diff_choice = lerInteiro("Escolha a dificuldade (1-3): ", 1, 3);
-            game->ai_difficulty = diff_choice - 1;
+            game->ai_difficulty = diff_choice;
         }
         else game->current_mode = MODE_INFINITE;
         
         // NOVO: Seleção de Torneio
-        limparTela();
-        aplicarTema(tema_ativo);
-        exibirTituloPrincipal();
-        printf("\n");
-        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║                                       TIPO DE PARTIDA                                                ║\n");
-        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ 0. Partida Única (Padrão)                                                                            ║\n");
-        printf("║ 1. Melhor de 3 (Torneio)                                                                             ║\n");
-        printf("║ 2. Melhor de 5 (Torneio)                                                                             ║\n");
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-        int tourney_choice = lerInteiro("Escolha o tipo: ", 0, 2);
-        if (tourney_choice == 1) game->tournament_target_wins = 3;
-        else if (tourney_choice == 2) game->tournament_target_wins = 5;
+        int selected_tourney = 0;
+        bool tourney_chosen = false;
+        
+        while (!tourney_chosen) {
+            exibirTelaEscolherTipoPartida(selected_tourney);
+            KeyCode tecla = lerTeclaMenu();
+            
+            switch (tecla) {
+                case KEY_UP:
+                    if (selected_tourney == 0) selected_tourney = 3;
+                    else selected_tourney--;
+                    break;
+                case KEY_DOWN:
+                    if (selected_tourney == 3) selected_tourney = 0;
+                    else selected_tourney++;
+                    break;
+                case KEY_ENTER:
+                    tourney_chosen = true;
+                    break;
+                case KEY_Q:
+                case KEY_ESC:
+                    return; // Retorna ao Menu Principal
+                default:
+                    break;
+            }
+        }
+        
+        if (selected_tourney == 3) return; // VOLTAR AO MENU PRINCIPAL
+        else if (selected_tourney == 1) game->tournament_target_wins = 3;
+        else if (selected_tourney == 2) game->tournament_target_wins = 5;
         else game->tournament_target_wins = 0;
 
-        obterNomesJogadores(game, game->current_mode);
+        if (!obterNomesJogadores(game, game->current_mode)) return;
     }
     if (is_resumed_game) {
         // Correção: Se o modo carregado for PVP mas o Jogador O for a IA, mudar para modo IA
         if (game->current_mode == MODE_PLAYER_VS_PLAYER && strcmp(game->nomeJogadorO, "IA") == 0) {
             game->current_mode = MODE_PLAYER_VS_AI;
         }
+        if (!obterNomesJogadores(game, game->current_mode)) return;
     }
 
     while (jogarNovamente) {
@@ -509,7 +494,7 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
         while (!rodadaTerminada) {
             // Se já estiver em estado terminal quando carregar
             if (verificarVitoria(game, winning_line)) {
-                exibirInterfaceJogo(game, winning_line, "PARTIDA CONCLUÍDA!");
+                exibirInterfaceJogo(game, winning_line, "PARTIDA CONCLUÍDA!", -1);
                 printf("\a");
                 printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
                 printf("║                                       FIM DE JOGO CARREGADO!                                         ║\n");
@@ -522,7 +507,7 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
                 esperarEnter();
                 break;
             } else if (game->current_mode != MODE_INFINITE && jogadasFeitas == 9) {
-                exibirInterfaceJogo(game, NULL, "PARTIDA CONCLUÍDA!");
+                exibirInterfaceJogo(game, NULL, "PARTIDA CONCLUÍDA!", -1);
                 printf("\a"); // Beep de empate
                 printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
                 printf("║                                       FIM DE JOGO CARREGADO!                                         ║\n");
@@ -539,30 +524,35 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
             int escolhaAcao = -1;
             
             if (game->current_mode == MODE_PLAYER_VS_AI && strcmp(nome_jogador_atual, "IA") == 0) {
-                exibirInterfaceJogo(game, NULL, "A IA está pensando...");
+                exibirInterfaceJogo(game, NULL, "A IA está pensando...", -1);
                 escolhaAcao = obterJogadaIA(game);
                 char iaMsg[100];
                 snprintf(iaMsg, sizeof(iaMsg), "A IA (%s) jogou na posição %d.", nome_jogador_atual, escolhaAcao);
-                exibirInterfaceJogo(game, NULL, iaMsg);
+                exibirInterfaceJogo(game, NULL, iaMsg, -1);
                 delaySimples(1500);
             } else {
+                int selected_cell = 4; // Start in the middle
                 while (true) {
                     char turnMsg[100];
                     snprintf(turnMsg, sizeof(turnMsg), "É a vez do jogador %s (%c)", nome_jogador_atual, game->jogadorAtual);
-                    exibirInterfaceJogo(game, NULL, turnMsg);
+                    exibirInterfaceJogo(game, NULL, NULL, selected_cell);
                     
-                    printf("\n Digite o número da posição (1-9) ou 0 para sair: ");
-                    if (scanf("%d", &escolhaAcao) == 1) {
-                        limparBufferEntrada();
-                        if (escolhaAcao >= 0 && escolhaAcao <= 9) {
-                            break;
-                        }
-                        exibirInterfaceJogo(game, NULL, "Valor fora do intervalo permitido (0-9). tente novamente.");
-                    } else {
-                        limparBufferEntrada();
-                        exibirInterfaceJogo(game, NULL, "Entrada inválida! Digite um número de 0 a 9.");
+                    KeyCode tecla = lerTeclaMenu();
+                    if (tecla == KEY_UP) {
+                        if (selected_cell >= 3) selected_cell -= 3;
+                    } else if (tecla == KEY_DOWN) {
+                        if (selected_cell <= 5) selected_cell += 3;
+                    } else if (tecla == KEY_LEFT) {
+                        if (selected_cell % 3 != 0) selected_cell -= 1;
+                    } else if (tecla == KEY_RIGHT) {
+                        if (selected_cell % 3 != 2) selected_cell += 1;
+                    } else if (tecla == KEY_ENTER) {
+                        escolhaAcao = selected_cell + 1;
+                        break;
+                    } else if (tecla == KEY_0 || tecla == KEY_Q || tecla == KEY_ESC) {
+                        escolhaAcao = 0;
+                        break;
                     }
-                    delaySimples(1500);
                 }
             }
             if (escolhaAcao == 0) {
@@ -582,14 +572,6 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
                     if (verificarVitoria(game, winning_line)) {
                         animarVitoria(game, winning_line); // ANIMAÇÃO
                         
-                        exibirInterfaceJogo(game, winning_line, "VITÓRIA DETECTADA!");
-                        printf("\a"); // Beep de vitória
-                        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-                        printf("║                                       PARABÉNS AO VENCEDOR!                                          ║\n");
-                        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-                        printf("║                            🏆 Jogador: %-38s Símbolo: (%c) venceu a partida! ║\n", nome_jogador_atual, game->jogadorAtual);
-                        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-                        
                         if (game->jogadorAtual == 'X') game->placarX++;
                         else game->placarO++;
 
@@ -607,24 +589,20 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
                         rodadaTerminada = true;
                         
                         // REPLAY PROMPT
-                        printf("Deseja ver o REPLAY desta rodada? (1-Sim, 0-Pular): ");
-                        if (lerInteiro("", 0, 1) == 1) executarReplay(game);
+                        if (perguntarReplayResultado(nome_jogador_atual, game->jogadorAtual, false)) {
+                            executarReplay(game);
+                        }
 
-                        esperarEnter();
                     } else if (game->current_mode != MODE_INFINITE && jogadasFeitas == 9) {
-                        exibirInterfaceJogo(game, NULL, "EMPATE!");
-                        printf("\a"); // Beep de empate
-                        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-                        printf("║                                           EMPATE!                                                    ║\n");
-                        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-                        printf("║                                  ⚖️  O jogo terminou sem vencedor! ⚖️                                 ║\n");
-                        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
                         game->empates++;
                         strcpy(game->ultimoVencedor, "Empate");
                         atualizarRanking(game->nomeJogadorX, 0);
                         atualizarRanking(game->nomeJogadorO, 0);
                         rodadaTerminada = true;
-                        esperarEnter();
+                        
+                        if (perguntarReplayResultado("", ' ', true)) {
+                            executarReplay(game);
+                        }
                     } else {
                         if (game->current_mode == MODE_INFINITE) {
                             if (game->jogadorAtual == 'X') {
@@ -656,8 +634,8 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
                         alternarJogador(game);
                     }
                 } else if (escolhaAcao != 0) {
-                    printf("Essa posição já está ocupada. Tente novamente.\n");
-                    esperarEnter();
+                    exibirInterfaceJogo(game, NULL, "Posição inválida ou já ocupada!", -1);
+                    delaySimples(1500);
                 }
             }
         }
@@ -674,18 +652,9 @@ void funcaoJogar(GameState* game, bool is_resumed_game) {
         }
 
         if (jogarNovamente) {
-            limparTela();
-            aplicarTema(tema_ativo);
-            exibirTituloDados();
-
-            printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-            printf("║                                       DESEJA JOGAR NOVAMENTE?                                          ║\n");
-            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-            printf("║                             1 - Sim                                0 - Não                            ║\n");
-            printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-            int jogarNovamenteInt = lerInteiro("Escolha uma opção: ", 0, 1);
-            if (jogarNovamenteInt == 0) {
-                jogarNovamente = false;
+            jogarNovamente = perguntarJogarNovamente();
+            
+            if (!jogarNovamente) {
                 limparTela();
                 aplicarTema(tema_ativo);
                 exibirTituloPrincipal();
