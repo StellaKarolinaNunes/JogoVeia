@@ -564,6 +564,7 @@ void funcaoJogar(GameState *game, bool is_resumed_game) {
     while (!rodadaTerminada) {
       // Se já estiver em estado terminal quando carregar
       if (verificarVitoria(game, winning_line)) {
+        char *vencedor = strcmp(&game->jogadorAtual, "X") == 0
                 ? game->nomeJogadorX
                 : game->nomeJogadorO;
         printf("║                            🏆 Este jogo já estava vencido "

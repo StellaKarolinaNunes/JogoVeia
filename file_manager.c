@@ -1,6 +1,5 @@
 #include "file_manager.h"
 #include "utils.h"
-#include "theme.h"
 #include "ui.h"
 
 #define SETTINGS_FILE "settings.cfg"
