@@ -4,7 +4,6 @@
 #include "config.h"
 
 void aplicarTema(int tema);
-void apresentarTema(int tema);
 void escolherTema(void);
 
 #endif

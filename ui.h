@@ -3,21 +3,12 @@
 
 #include "config.h"
 
-void exibirTituloPrincipal(void);
-void exibirTituloInstrucoes(void);
-void exibirTituloCreditos(void);
-void exibirTituloTemas(void);
-void exibirTituloSaindo(void);
-void exibirTituloReferencia(void);
-void exibirTituloDados(void);
-void exibirTituloModoJogo(void);
+
 void exibirTelaEscolherModoJogo(int selected);
 void exibirTelaEscolherTipoPartida(int selected);
 void exibirTelaConfigurarJogadores(int jogadorNum);
 void exibirTelaConfirmarJogadores(const char* jogadorX, const char* jogadorO, int selected);
 void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char* jogador1, const char* jogador2, const char* vencedor, int selected);
-void exibirTituloDeletar(void);
-void exibirTituloRanking(void);
 void exibirTelaRanking(void);
 void exibirMenuCapa(void);
 void exibirMenuInterativo(int selected, const GameState* game);

@@ -11,7 +11,6 @@ void funcaoDeletarJogo(void);
 
 FILE* abrirArquivo(const char* path, const char* mode);
 void fecharArquivo(FILE* file);
-bool escreverLinhaFormatada(FILE* file, const char* format, ...);
 
 void carregarRanking(void);
 void salvarRanking(void);

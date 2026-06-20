@@ -6,92 +6,33 @@
 #include "theme.h"
 
 void funcaoInstrucoes(void) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloInstrucoes();
-    
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                            COMO JOGAR                                                ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║ - O tabuleiro é uma matriz 3x3 com posições numeradas de 1 a 9.                                      ║\n");
-    printf("║ - Dois jogadores se revezam utilizando os símbolos X e O.                                            ║\n");
-    printf("║ - O objetivo é alinhar 3 símbolos iguais (X ou O).                                                   ║\n");
-    printf("║ - Pode-se vencer alinhando na horizontal, vertical ou diagonal.                                      ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   * TABULEIRO DE REFERÊNCIA:                                                                         ║\n");
-    printf("║                                          1 ║ 2 ║ 3                                                   ║\n");
-    printf("║                                         ───┼───┼───                                                  ║\n");
-    printf("║                                          4 ║ 5 ║ 6                                                   ║\n");
-    printf("║                                         ───┼───┼───                                                  ║\n");
-    printf("║                                          7 ║ 8 ║ 9                                                   ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   💡 DICAS DE ESTRATÉGIA:                                                                            ║\n");
-    printf("║      - Comece pelo centro ou pelos cantos.                                                           ║\n");
-    printf("║      - Bloqueie jogadas do adversário.                                                               ║\n");
-    printf("║      - Pense duas jogadas à frente!                                                                  ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   Pressione Enter para voltar ao menu...                                                             ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    
-    esperarEnter();
+    exibirTelaInstrucoes();
+    while (1) {
+        KeyCode tecla = lerTeclaMenu();
+        if (tecla == KEY_ENTER || tecla == KEY_Q || tecla == KEY_ESC) {
+            break;
+        }
+    }
 }
 
 void funcaoCreditos(void) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloCreditos();
-    
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                         CRÉDITOS                                                     ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║   Curso: Ciências da Computação                                                                      ║\n");
-    printf("║   Disciplina: Programação 1                                                                          ║\n");
-    printf("║   Projeto prova: jogo da veia                                                                        ║\n");
-    printf("║   Autor: Stella Karolina Nunes                                                                       ║\n");
-    printf("║   Matrícula: 20223834810                                                                             ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║   Versão 1.0  - Data: 2023                                                                           ║\n");
-    printf("║   Versão 2.0  - Data: 2025                                                                           ║\n");
-    printf("║   Versão 3.0  - Data: 2025                                                                           ║\n");
-    printf("║   Versão 4.0  - Data: 2026                                                                           ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║ Pressione Enter para voltar ao menu...                                                               ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    
-    esperarEnter();
+    exibirTelaCreditos();
+    while (1) {
+        KeyCode tecla = lerTeclaMenu();
+        if (tecla == KEY_ENTER || tecla == KEY_Q || tecla == KEY_ESC) {
+            break;
+        }
+    }
 }
 
 void funcaoReferencia(void) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloReferencia();
-    
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                            REFERÊNCIAS                                               ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                                      ║\n");
-    printf("║    Fontes utilizadas para estudo do jogo da veia:                                                    ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  • Wikipedia - jogo da veia                                                                          ║\n");
-    printf("║    https://pt.wikipedia.org/wiki/Jogo_da_ veia                                                         ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  • Wikipedia - Tic-Tac-Toe (versão internacional)                                                     ║\n");
-    printf("║    https://en.wikipedia.org/wiki/Tic-tac-toe                                                          ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  • GeeksforGeeks - Tic Tac Toe (Lógica e implementação)                                               ║\n");
-    printf("║    https://www.geeksforgeeks.org/tic-tac-toe-game/                                                    ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  • Stanford University - Estratégias de jogos (Game Theory)                                           ║\n");
-    printf("║    https://plato.stanford.edu/entries/game-theory/                                                    ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║  • Livro: \"The Compleat Strategyst\" - J. D. Williams (Teoria dos Jogos)                             ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║    Observação: O jogo da veia é um exemplo clássico de estratégia perfeita.                          ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("║    Pressione ENTER para voltar ao menu...                                                            ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-
-    esperarEnter();
+    exibirTelaReferencia();
+    while (1) {
+        KeyCode tecla = lerTeclaMenu();
+        if (tecla == KEY_ENTER || tecla == KEY_Q || tecla == KEY_ESC) {
+            break;
+        }
+    }
 }
 
 void funcaoTema(void) {
@@ -99,131 +40,256 @@ void funcaoTema(void) {
 }
 
 void funcaoSaveLoad(GameState* game) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloDados();
+    int selected = 1;
+    KeyCode tecla;
     
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                       SALVAR / CARREGAR JOGO                                         ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║ 1. Salvar Jogo Atual                                                                                 ║\n");
-    printf("║ 2. Carregar Jogo Salvo                                                                               ║\n");
-    printf("║ 3. Deletar Jogo Salvo                                                                                ║\n");
-    printf("║ 0. Voltar ao menu                                                                                    ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
- 
-    int escolha = lerInteiro("Escolha uma opção: ", 0, 3);
-    
-    switch (escolha) {
-        case 1:
-            salvarJogo(game);
-            break;
-        case 2:
-            if (carregarJogo(game)) {
-                funcaoJogar(game, true);
-            }
-            break;
-        case 3:
-            funcaoDeletarJogo();
-            break;
-        case 0:
-            printf("Retornando ao menu principal...\n");
-            printf("Pressione ENTER para continuar...\n\n");
-            esperarEnter();
-            break;
-        default:
-            printf("Opção inválida!\n");
-            esperarEnter();
-            break;
-    }
+    do {
+        exibirTelaSaveLoad(selected);
+        tecla = lerTeclaMenu();
+        
+        switch (tecla) {
+            case KEY_UP:
+                selected--;
+                if (selected < 1) selected = 3;
+                break;
+                
+            case KEY_DOWN:
+                selected++;
+                if (selected > 3) selected = 1;
+                break;
+                
+            case KEY_ENTER:
+                switch (selected) {
+                    case 1:
+                        salvarJogo(game);
+                        break;
+                    case 2:
+                        if (carregarJogo(game)) {
+                            funcaoJogar(game, true);
+                        }
+                        break;
+                    case 3:
+                        funcaoDeletarJogo();
+                        break;
+                }
+                break;
+                
+            case KEY_ESC:
+            case KEY_Q:
+            case KEY_0:
+                return;
+                
+            default:
+                break;
+        }
+    } while (1);
 }
 
 void funcaoRanking(void) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloRanking();
-    
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                          RANKING DOS JOGADORES                                       ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    
-    if (num_ranking_entries == 0) {
-        printf("║ Nenhum dado de ranking disponível. Jogue algumas partidas no 'jogo da veia' para preencher!           ║\n");
-    } else {
-        qsort(ranking, num_ranking_entries, sizeof(RankingEntry), compararRankingEntries);
-        
-        printf("║ Pos ║ %-38s ║ %-8s ║ %-8s ║ %-8s ║ %-10s ║\n", "Nome", "Vitórias", "Derrotas", "Empates", "Conquistas");
-        printf("╠═════║════════════════════════════════════════║══════════║══════════║══════════║════════════╣\n");
-        
-        for (int i = 0; i < num_ranking_entries; i++) {
-            printf("║ %-3d ║ %-38s ║ %-8d ║ %-8d ║ %-8d ║ %-10d ║\n",
-                   i + 1, ranking[i].name, ranking[i].wins, ranking[i].losses, ranking[i].ties, ranking[i].medals);
+    while (1) {
+        exibirTelaRanking();
+        KeyCode tecla = lerTeclaMenu();
+        if (tecla == KEY_ENTER || tecla == KEY_Q || tecla == KEY_ESC) {
+            break;
         }
     }
-    
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n   Pressione Enter para voltar ao menu...                                                             \n");
-    esperarEnter();
 }
 
 void funcaoSair(void) {
     limparTela();
     aplicarTema(tema_ativo);
-    exibirTituloSaindo();
-    printf("\a\a"); // Beep duplo ao finalizar
-    printf("\n");
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                                                                                      ║\n");
-    printf("║        Obrigado por jogar!                                                                           ║\n");
-    printf("║        Desenvolvido por: Stella Karolina                                                             ║\n");
-    printf("║        jogo da veia — Versão: %-71s║\n", GAME_VERSION);
-    printf("║                                                                                                      ║\n");
-    printf("║                                            Volte sempre!!!!!                                         ║\n");
-    printf("║                                                                                                      ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-
+    
+    for(int i=0; i<5; i++) printf("\n");
+    
+    printf("      ╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("      ║                                                                                                                              ║\n");
+    printf("      ║                             ___  ___ ___ ___ ___   _   ___   ___                                                             ║\n");
+    printf("      ║                            / _ \\| _ ) _ \\_ _/ __| /_\\ |   \\ / _ \\                                                            ║\n");
+    printf("      ║                           | (_) | _ \\   /| | (_ |/ _ \\| |) | (_) |                                                           ║\n");
+    printf("      ║                            \\___/|___/_|_\\___\\___/_/ \\_\\___/ \\___/                                                            ║\n");
+    printf("      ║                                                                                                                              ║\n");
+    
+    char header_info[200];
+    snprintf(header_info, sizeof(header_info), "✦  TEMA ATIVO: %s  │  VERSÃO DO JOGO: %s  ✦", nomes_temas[tema_ativo], GAME_VERSION);
+    int info_len = visible_strlen(header_info);
+    int pad_left = (126 - info_len) / 2;
+    int pad_right = 126 - info_len - pad_left;
+    printf("      ║");
+    for(int i=0; i<pad_left; i++) printf(" ");
+    printf("%s", header_info);
+    for(int i=0; i<pad_right; i++) printf(" ");
+    printf("║\n");
+    
+    printf("      ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("      ║                                                                                                                              ║\n");
+    printf("      ║    ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐    ║\n");
+    
+    const char* title1 = "OBRIGADA POR JOGAR!";
+    int p_t1 = (116 - visible_strlen(title1)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_t1; i++) printf(" ");
+    printf("%s", title1);
+    for(int i=0; i<116 - visible_strlen(title1) - p_t1; i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    ├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤    ║\n");
+    printf("      ║    │                                                                                                                    │    ║\n");
+    
+    const char* destaque_txt = "ATÉ A PRÓXIMA PARTIDA!";
+    int p_dest = (46 - visible_strlen(destaque_txt)) / 2;
+    printf("      ║    │                         \033[7m╔══════════════════════════════════════════════╗\033[0m%s                                           │    ║\n", temas[tema_ativo]);
+    
+    printf("      ║    │                         \033[7m║\033[0m%s", temas[tema_ativo]);
+    for(int i=0; i<p_dest; i++) printf(" ");
+    printf("\033[7m%s\033[0m%s", destaque_txt, temas[tema_ativo]);
+    for(int i=0; i<46 - visible_strlen(destaque_txt) - p_dest; i++) printf(" ");
+    printf("\033[7m║\033[0m%s                                           │    ║\n", temas[tema_ativo]);
+    
+    printf("      ║    │                         \033[7m╚══════════════════════════════════════════════╝\033[0m%s                                           │    ║\n", temas[tema_ativo]);
+    
+    printf("      ║    │                                                                                                                    │    ║\n");
+    
+    const char* p1 = "  Obrigada por jogar o Jogo da Veia e fazer parte desta experiência.";
+    printf("      ║    │%s", p1);
+    for(int i=0; i<116 - visible_strlen(p1); i++) printf(" ");
+    printf("│    ║\n");
+    
+    const char* p2 = "  Volte sempre para testar novas estratégias, desafios e jogadas incríveis.";
+    printf("      ║    │%s", p2);
+    for(int i=0; i<116 - visible_strlen(p2); i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    │                                                                                                                    │    ║\n");
+    printf("      ║    │────────────────────────────────────────────────────────────────────────────────────────────────────────────────────│    ║\n");
+    
+    const char* t2 = "MENSAGEM FINAL";
+    int p_t2 = (116 - visible_strlen(t2)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_t2; i++) printf(" ");
+    printf("%s", t2);
+    for(int i=0; i<116 - visible_strlen(t2) - p_t2; i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    │────────────────────────────────────────────────────────────────────────────────────────────────────────────────────│    ║\n");
+    printf("      ║    │                                                                                                                    │    ║\n");
+    
+    const char* quote = "✦ Toda grande estratégia começa com a primeira jogada. ✦";
+    int p_q = (116 - visible_strlen(quote)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_q; i++) printf(" ");
+    printf("%s", quote);
+    for(int i=0; i<116 - visible_strlen(quote) - p_q; i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    │                                                                                                                    │    ║\n");
+    printf("      ║    │────────────────────────────────────────────────────────────────────────────────────────────────────────────────────│    ║\n");
+    
+    const char* t3 = "DESENVOLVIMENTO";
+    int p_t3 = (116 - visible_strlen(t3)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_t3; i++) printf(" ");
+    printf("%s", t3);
+    for(int i=0; i<116 - visible_strlen(t3) - p_t3; i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    │────────────────────────────────────────────────────────────────────────────────────────────────────────────────────│    ║\n");
+    printf("      ║    │                                                                                                                    │    ║\n");
+    
+    const char* d1 = "Desenvolvedora: Stella Karolina Nunes Peixoto";
+    int p_d1 = (116 - visible_strlen(d1)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_d1; i++) printf(" ");
+    printf("%s", d1);
+    for(int i=0; i<116 - visible_strlen(d1) - p_d1; i++) printf(" ");
+    printf("│    ║\n");
+    
+    char d2[200];
+    snprintf(d2, sizeof(d2), "Projeto acadêmico • Ciência da Computação • v%s", GAME_VERSION);
+    int p_d2 = (116 - visible_strlen(d2)) / 2;
+    printf("      ║    │");
+    for(int i=0; i<p_d2; i++) printf(" ");
+    printf("%s", d2);
+    for(int i=0; i<116 - visible_strlen(d2) - p_d2; i++) printf(" ");
+    printf("│    ║\n");
+    
+    printf("      ║    │                                                                                                                    │    ║\n");
+    printf("      ║    └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘    ║\n");
+    printf("      ║                                                                                                                              ║\n");
+    printf("      ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    
+    const char* enter_msg = "Pressione ENTER para encerrar o jogo...";
+    int p_enter = (126 - visible_strlen(enter_msg)) / 2;
+    printf("      ║");
+    for(int i=0; i<p_enter; i++) printf(" ");
+    printf("%s", enter_msg);
+    for(int i=0; i<126 - visible_strlen(enter_msg) - p_enter; i++) printf(" ");
+    printf("║\n");
+    
+    printf("      ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    
     printf("\033[0m"); // reset de cor
+    esperarEnter();
 }
 
 
 void menuPrincipal(GameState* game) {
-    int opcao;do {
+    int opcaoSelecionada = 1;
+    KeyCode tecla;
+    
+    do {
         limparTela();
         aplicarTema(tema_ativo);
-        exibirTituloPrincipal();
-        exibirMenuCapa();
-
-        opcao = lerInteiro("     Escolha uma opção: ", 1, 8);
-
-        switch (opcao) {
-            case 1:
-                funcaoJogar(game, false);
+        exibirMenuInterativo(opcaoSelecionada, game);
+        
+        tecla = lerTeclaMenu();
+        
+        switch (tecla) {
+            case KEY_UP:
+                if (opcaoSelecionada == 1) opcaoSelecionada = 8;
+                else opcaoSelecionada--;
                 break;
-            case 2:
-                funcaoInstrucoes();
+                
+            case KEY_DOWN:
+                if (opcaoSelecionada == 8) opcaoSelecionada = 1;
+                else opcaoSelecionada++;
                 break;
-            case 3:
-                funcaoCreditos();
+                
+            case KEY_ENTER:
+                switch (opcaoSelecionada) {
+                    case 1:
+                        funcaoJogar(game, false);
+                        break;
+                    case 2:
+                        funcaoInstrucoes();
+                        break;
+                    case 3:
+                        funcaoCreditos();
+                        break;
+                    case 4:
+                        funcaoReferencia();
+                        break;
+                    case 5:
+                        funcaoTema();
+                        break;
+                    case 6:
+                        funcaoSaveLoad(game);
+                        break;
+                    case 7:
+                        funcaoRanking();
+                        break;
+                    case 8:
+                        funcaoSair();
+                        return; // Sai do programa
+                }
                 break;
-            case 4:
-                funcaoReferencia();
+                
+            case KEY_Q:
+            case KEY_ESC:
+                opcaoSelecionada = 8; // Destaca a opção Sair
                 break;
-            case 5:
-                funcaoTema();
-                break;
-            case 6:
-                funcaoSaveLoad(game);
-                break;
-            case 7:
-                funcaoRanking();
-                break;
-            case 8:
-                funcaoSair();
-                break;
+                
             default:
-                printf("Opção inválida!\n");
-                esperarEnter();
+                break;
         }
-    } while (opcao != 8);
+    } while (1);
 }

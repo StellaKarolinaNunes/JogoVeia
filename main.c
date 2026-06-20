@@ -6,7 +6,15 @@
 
 void configurarSistema(void) {
     setlocale(LC_ALL, "");
+#ifdef _WIN32
     system(SET_TITLE);
+    system("mode con cols=140 lines=48");
+#else
+    // No Linux/macOS, define o título e redimensiona o terminal usando sequências ANSI
+    printf("\033]0;jogo da veia\007");
+    printf("\033[8;48;140t");
+    fflush(stdout);
+#endif
     aplicarTema(tema_ativo);
     srand((unsigned)time(NULL));
 }

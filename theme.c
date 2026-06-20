@@ -1,6 +1,7 @@
 #include "theme.h"
 #include "utils.h"
 #include "ui.h"
+#include "file_manager.h"
 
 void carregarTemas(void) {
     FILE* file = fopen("themes.cfg", "r");
@@ -66,75 +67,65 @@ void aplicarTema(int tema) {
 #endif
 }
 
-void apresentarTema(int tema) {
-    limparTela();
-    aplicarTema(tema);
-    printf("Prévia do tema: %s\n\n", nomes_temas[tema]);
-    exibirTituloPrincipal();
-}
 
 void escolherTema(void) {
-    int escolha;
-    do {
-        limparTela();
-        aplicarTema(tema_ativo);
-        exibirTituloTemas();
-
-        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║                                          TEMAS DISPONÍVEIS                                           ║\n");
-        printf("╠════════════════════════════════╦═════════════════════════════════╦═════════════════════════════════╣\n");
-
-        const int num_cols = 3;
-        int num_rows = (TOTAL_TEMAS + num_cols - 1) / num_cols;
-
-        for (int i = 0; i < num_rows; ++i) {
-            printf("║");
-            for (int j = 0; j < num_cols; ++j) {
-                int index = i + j * num_rows;
-                int current_col_width = (j == 0) ? 32 : 33; // Colunas 32, 33, 33 para totalizar 100 com 2 separadores
-                if (index < TOTAL_TEMAS) {
-                    char theme_str[100];
-                    snprintf(theme_str, sizeof(theme_str), " %2d - %s", index + 1, nomes_temas[index]);
-                    int vlen = visible_strlen(theme_str);
-                    if (vlen > current_col_width) {
-                        // Se ainda for muito grande (raro), truncar com reticências
-                        theme_str[current_col_width - 4] = '.';
-                        theme_str[current_col_width - 3] = '.';
-                        theme_str[current_col_width - 2] = '.';
-                        theme_str[current_col_width - 1] = '\0';
-                        vlen = current_col_width;
-                    }
-                    printf("%s", theme_str);
-                    for (int k = 0; k < current_col_width-vlen; k++) putchar(' ');
-                } else {
-                    for (int k = 0; k < current_col_width; k++) putchar(' ');
-                }
-                if (j < num_cols - 1) {
-                    printf("║");
-                }
-            }
-            printf("║\n");
-        }
-
-        printf("╠════════════════════════════════╩═════════════════════════════════╩═════════════════════════════════╣\n");
-        printf("║ 0 - Voltar ao menu                                                                                   ║\n");
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-
-        escolha = lerInteiro("Escolha o tema para visualizar a prévia (ou 0 para voltar): ", 0, TOTAL_TEMAS);
-        
-        if (escolha > 0 && escolha <= TOTAL_TEMAS) {
-            apresentarTema(escolha - 1);
-            int usar = lerInteiro("\nEsse tema lhe agrada? (1 - Usar, 0 - Voltar): ", 0, 1);
-            if (usar == 1) {
-                tema_ativo = escolha - 1;
-                printf("Tema alterado para: %s\n", nomes_temas[tema_ativo]);
-                printf("Pressione Enter para continuar...");
-                esperarEnter();
-                break;
-            }
-        }
-    } while (escolha != 0);
+    int original_tema = tema_ativo;
+    int preview_tema = tema_ativo;
+    KeyCode tecla;
     
-    limparTela();
-    aplicarTema(tema_ativo);
+    do {
+        // Define tema_ativo temporariamente como preview_tema para renderizar os elementos da tela nas cores certas!
+        tema_ativo = preview_tema;
+        exibirTelaTemas(preview_tema);
+        
+        tecla = lerTeclaMenu();
+        
+        switch (tecla) {
+            case KEY_UP:
+                preview_tema--;
+                if (preview_tema < 0) preview_tema = num_temas - 1;
+                break;
+                
+            case KEY_DOWN:
+                preview_tema++;
+                if (preview_tema >= num_temas) preview_tema = 0;
+                break;
+                
+            case KEY_LEFT:
+                if (preview_tema >= 17) {
+                    preview_tema -= 17;
+                } else {
+                    preview_tema += 34;
+                    if (preview_tema >= num_temas) preview_tema = num_temas - 1;
+                }
+                break;
+                
+            case KEY_RIGHT:
+                if (preview_tema < 34) {
+                    preview_tema += 17;
+                    if (preview_tema >= num_temas) preview_tema = num_temas - 1;
+                } else {
+                    preview_tema -= 34;
+                }
+                break;
+                
+            case KEY_ENTER:
+                // Seleção confirmada!
+                tema_ativo = preview_tema;
+                aplicarTema(tema_ativo);
+                salvarConfiguracoes();
+                return;
+                
+            case KEY_ESC:
+            case KEY_Q:
+            case KEY_0:
+                // Cancelado! Restaurar tema original.
+                tema_ativo = original_tema;
+                aplicarTema(tema_ativo);
+                return;
+                
+            default:
+                break;
+        }
+    } while (1);
 }

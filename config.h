@@ -20,7 +20,7 @@
 #else
 #include <sys/stat.h>
 #define MKDIR(dir) mkdir(dir, 0777)
-#define SET_TITLE "echo -ne \"\\033]0;jogo da veia\\007\""
+#define SET_TITLE "echo -ne '\\033]0;jogo da veia\\007'"
 #define PAUSE_COMMAND "read -p 'Pressione Enter para continuar...'"
 #define CLEAR_COMMAND "clear"
 #define RESET_COLOR_COMMAND "\033[0m"

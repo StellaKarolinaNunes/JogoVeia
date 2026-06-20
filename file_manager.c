@@ -36,16 +36,6 @@ void fecharArquivo(FILE* file) {
     }
 }
 
-bool escreverLinhaFormatada(FILE* file, const char* format, ...) {
-    if (file == NULL) return false;
-    
-    va_list args;
-    va_start(args, format);
-    int result = vfprintf(file, format, args);
-    va_end(args);
-    
-    return result >= 0;
-}
 
 void carregarRanking(void) {
     FILE *file = abrirArquivo(RANKING_FILE, "rb");
@@ -147,55 +137,65 @@ void salvarJogo(GameState* game) {
     char filename[MAX_LINE_BUFFER] = "";
     bool sobrescrever = false;
 
-    if (strlen(game->loaded_filename) > 0) {
-        printf("Você carregou este jogo do arquivo: %s\n", game->loaded_filename);
-        printf("Deseja sobrescrever este arquivo? (1 - Sim, 0 - Novo Salvamento): ");
-        int op = lerInteiro("", 0, 1);
-        if (op == 1) {
-            strncpy(filename, game->loaded_filename, MAX_LINE_BUFFER - 1);
-            
-            // Tenta extrair o nome do salvamento original do caminho
-            char *base = strrchr(filename, '/');
-            if (!base) base = strrchr(filename, '\\');
-            if (base) base++; else base = filename;
-            
-            char temp_n[MAX_LINE_BUFFER];
-            strncpy(temp_n, base, MAX_LINE_BUFFER-1);
-            char *underscore = strchr(temp_n, '_');
-            if (underscore) *underscore = '\0';
-            strncpy(save_name, temp_n, MAX_NOME_JOGADOR - 1);
-            
-            sobrescrever = true;
+    int selected = 1; // 1 = Sobrescrever, 2 = Novo
+    bool canceled = false;
+    
+    // Mostra tela de Escolher Salvamento
+    while (1) {
+        exibirTelaEscolherSalvamento(selected);
+        KeyCode tecla = lerTeclaMenu();
+        if (tecla == KEY_UP || tecla == KEY_DOWN) {
+            selected = (selected == 1) ? 2 : 1;
+        } else if (tecla == KEY_ENTER) {
+            break;
+        } else if (tecla == KEY_ESC || tecla == KEY_Q || tecla == KEY_0) {
+            canceled = true;
+            break;
         }
     }
-
-    if (!sobrescrever) {
-        printf("Deseja escolher um salvamento da lista para sobrescrever? (1 - Sim, 0 - Criar Novo): ");
-        int op_list = lerInteiro("", 0, 1);
-        if (op_list == 1) {
-            SaveInfo available_saves[MAX_SAVES];
-            int num_available_saves = listarSaves(available_saves, MAX_SAVES);
-            if (num_available_saves > 0) {
-                printf("Selecione qual salvamento sobrescrever (ou 0 para cancelar): ");
-                int sel = lerInteiro("", 0, num_available_saves);
-                if (sel > 0) {
-                    strncpy(filename, available_saves[sel-1].filename, MAX_LINE_BUFFER-1);
-                    strncpy(save_name, available_saves[sel-1].save_name, MAX_NOME_JOGADOR-1);
-                    sobrescrever = true;
+    
+    if (canceled) return;
+    
+    if (selected == 1) { // Sobrescrever
+        SaveInfo available_saves[MAX_SAVES];
+        int num_available_saves = listarSaves(available_saves, MAX_SAVES);
+        
+        int sel_idx = 0;
+        bool list_canceled = false;
+        
+        while (1) {
+            exibirTelaSavesList(available_saves, num_available_saves, sel_idx, 0); // mode 0 = sobrescrever
+            KeyCode tecla = lerTeclaMenu();
+            if (num_available_saves == 0) {
+                if (tecla == KEY_ENTER || tecla == KEY_ESC || tecla == KEY_Q || tecla == KEY_0) {
+                    list_canceled = true;
+                    break;
                 }
             } else {
-                printf("Nenhum salvamento disponível na lista.\n");
+                if (tecla == KEY_UP && sel_idx > 0) {
+                    sel_idx--;
+                } else if (tecla == KEY_DOWN && sel_idx < num_available_saves - 1) {
+                    sel_idx++;
+                } else if (tecla == KEY_ENTER) {
+                    strncpy(filename, available_saves[sel_idx].filename, MAX_LINE_BUFFER-1);
+                    strncpy(save_name, available_saves[sel_idx].save_name, MAX_NOME_JOGADOR-1);
+                    sobrescrever = true;
+                    break;
+                } else if (tecla == KEY_ESC || tecla == KEY_Q || tecla == KEY_0) {
+                    list_canceled = true;
+                    break;
+                }
             }
         }
-    }
-
-    if (!sobrescrever) {
-        lerString("Digite um nome para o seu novo salvamento: ", save_name, sizeof(save_name));
+        
+        if (list_canceled || !sobrescrever) {
+            return; // Cancelou na lista
+        }
+    } else { // Criar Novo
+        exibirTelaNovoSalvamento();
+        lerString("", save_name, sizeof(save_name));
         if (strlen(save_name) == 0) {
-            printf("Nome do salvamento não pode ser vazio. Cancelando salvamento.\n");
-            printf("Pressione ENTER para continuar...\n\n");
-            esperarEnter();
-            return;
+            return; // Cancelou ao deixar vazio
         }
 
         time_t rawtime;
@@ -217,8 +217,6 @@ void salvarJogo(GameState* game) {
     
     FILE *file = abrirArquivo(filename, "w");
     if (file == NULL) {
-        printf("Pressione ENTER para continuar...\n\n");
-        esperarEnter();
         return;
     }
     
@@ -278,10 +276,7 @@ void salvarJogo(GameState* game) {
     fecharArquivo(file);
     strncpy(game->loaded_filename, filename, MAX_LINE_BUFFER-1);
     
-    printf("\a"); // Beep de sucesso
-    printf("Jogo salvo com sucesso!\n");
-    printf("Pressione ENTER para continuar...\n\n");
-    esperarEnter();
+    exibirSucessoSalvamento(save_name);
 }
 
 int listarSaves(SaveInfo* saves_array, int max_saves) {
@@ -382,49 +377,50 @@ int listarSaves(SaveInfo* saves_array, int max_saves) {
 }
 
 bool carregarJogo(GameState* game) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloDados();
-    
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                       CARREGAR JOGO SALVO                                            ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    
     SaveInfo available_saves[MAX_SAVES];
     int num_available_saves = listarSaves(available_saves, MAX_SAVES);
     
     if (num_available_saves == 0) {
-        printf("║ Nenhum jogo salvo encontrado.                                                                        ║\n");
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-        printf("Pressione ENTER para continuar...\n\n");
+        exibirTelaSavesList(NULL, 0, 0, 1);
+        printf("\nPressione ENTER para continuar...\n");
         esperarEnter();
         return false;
     }
     
-    printf("║ Saves Disponíveis:                                                                                   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    int selected = 0;
+    KeyCode tecla;
     
-    for (int i = 0; i < num_available_saves; i++) {
-        printf("║ %2d. Nome: %-15s │ X: %-10s (%d) │ O: %-10s (%d) │ Emp: %2d │ Venc: %-14s ║\n",
-               i + 1,
-               available_saves[i].save_name,
-               available_saves[i].playerX, available_saves[i].winsX,
-               available_saves[i].playerO, available_saves[i].winsO,
-               available_saves[i].ties,
-               available_saves[i].last_winner);
-    }
-    
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    
-    int escolha = lerInteiro("Digite o número do jogo para carregar (ou 0 para voltar): ", 0, num_available_saves);
-    
-    if (escolha == 0) {
-        printf("Voltando ao menu de Save/Load...\n");
-        return false;
-    }
-    
+    do {
+        exibirTelaSavesList(available_saves, num_available_saves, selected, 1);
+        tecla = lerTeclaMenu();
+        
+        switch (tecla) {
+            case KEY_UP:
+                selected--;
+                if (selected < 0) selected = num_available_saves - 1;
+                break;
+                
+            case KEY_DOWN:
+                selected++;
+                if (selected >= num_available_saves) selected = 0;
+                break;
+                
+            case KEY_ENTER:
+                goto save_selected;
+                
+            case KEY_ESC:
+            case KEY_Q:
+            case KEY_0:
+                return false;
+                
+            default:
+                break;
+        }
+    } while (1);
+
+save_selected:;
     char selected_filename[MAX_LINE_BUFFER];
-    strcpy(selected_filename, available_saves[escolha - 1].filename);
+    strcpy(selected_filename, available_saves[selected].filename);
     
     FILE *file = abrirArquivo(selected_filename, "r");
     if (file == NULL) {
@@ -599,51 +595,52 @@ bool carregarJogo(GameState* game) {
 }
 
 void funcaoDeletarJogo(void) {
-    limparTela();
-    aplicarTema(tema_ativo);
-    exibirTituloDeletar();
-
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                       DELETAR JOGO SALVO                                             ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    
     SaveInfo available_saves[MAX_SAVES];
     int num_available_saves = listarSaves(available_saves, MAX_SAVES);
     
     if (num_available_saves == 0) {
-        printf("║ Nenhum jogo salvo encontrado.                                                                        ║\n");
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-        printf("Pressione ENTER para continuar...\n\n");
+        exibirTelaSavesList(NULL, 0, 0, 2);
+        printf("\nPressione ENTER para continuar...\n");
         esperarEnter();
         return;
     }
     
-    printf("║ Saves Disponíveis:                                                                                   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    int selected = 0;
+    KeyCode tecla;
     
-    for (int i = 0; i < num_available_saves; i++) {
-        printf("║ %2d. Nome: %-15s │ X: %-10s (%d) │ O: %-10s (%d) │ Emp: %2d │ Data: %-21s ║\n",
-               i + 1,
-               available_saves[i].save_name,
-               available_saves[i].playerX, available_saves[i].winsX,
-               available_saves[i].playerO, available_saves[i].winsO,
-               available_saves[i].ties,
-               available_saves[i].timestamp);
-    }
-    
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
-    
-    int escolha = lerInteiro("Digite o número do jogo para DELETAR (ou 0 para voltar): ", 0, num_available_saves);
-    
-    if (escolha == 0) {
-        printf("Operação de exclusão cancelada.\n");
-        return;
-    }
-    
+    do {
+        exibirTelaSavesList(available_saves, num_available_saves, selected, 2);
+        tecla = lerTeclaMenu();
+        
+        switch (tecla) {
+            case KEY_UP:
+                selected--;
+                if (selected < 0) selected = num_available_saves - 1;
+                break;
+                
+            case KEY_DOWN:
+                selected++;
+                if (selected >= num_available_saves) selected = 0;
+                break;
+                
+            case KEY_ENTER:
+                goto delete_selected;
+                
+            case KEY_ESC:
+            case KEY_Q:
+            case KEY_0:
+                return;
+                
+            default:
+                break;
+        }
+    } while (1);
+
+delete_selected:;
     char file_to_delete[MAX_LINE_BUFFER];
-    strcpy(file_to_delete, available_saves[escolha - 1].filename);
+    strcpy(file_to_delete, available_saves[selected].filename);
     
-    printf("Tem certeza que deseja deletar '%s'? (1 - Sim, 0 - Não): ", available_saves[escolha - 1].save_name);
+    printf("\nTem certeza que deseja deletar '%s'? (1 - Sim, 0 - Não): ", available_saves[selected].save_name);
     int confirm = lerInteiro("", 0, 1);
     
     if (confirm == 1) {
