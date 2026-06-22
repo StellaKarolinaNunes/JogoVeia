@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+# Extensões compiladas e objetos
+*.o
+*.out
+*.exe
+
+# Pastas e utilitários gerados
+build/
+saves/
+.fuse_hidden*
+
+# Arquivos de IDE e SO
+.vscode/
+.idea/
+.DS_Store

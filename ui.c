@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "file_manager.h"
+#include "i18n.h"
 #include "theme.h"
 #include "utils.h"
 
@@ -39,8 +40,8 @@ void exibirTelaEscolherModoJogo(int selected) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • ESCOLHA O MODO DE JOGO",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("ESCOLHA O MODO DE JOGO"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -58,7 +59,7 @@ void exibirTelaEscolherModoJogo(int selected) {
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "MODO DE JOGO";
+  const char *title1 = _("MODO DE JOGO");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -95,7 +96,6 @@ void exibirTelaEscolherModoJogo(int selected) {
   for (int i = 0; i < 4; i++) {
     if (selected == i) {
       char formatado[100];
-      snprintf(formatado, sizeof(formatado), "▶ %s ◀", opts[i]);
       int p_opt =
           9; // align all selected items so their `[` starts at column 11
 
@@ -126,8 +126,8 @@ void exibirTelaEscolherModoJogo(int selected) {
       printf(" ");                                     // border space (1)
       for (int j = 0; j < p_opt; j++)
         printf(" ");
-      printf("%s", opts[i]);
-      for (int j = 0; j < 50 - visible_strlen(opts[i]) - p_opt; j++)
+      printf("%s", _(opts[i]));
+      for (int j = 0; j < 50 - visible_strlen(_(opts[i])) - p_opt; j++)
         printf(" ");
       printf(" "); // border space (1)
       printf("                                       │    ║\n"); // 39 spaces
@@ -146,7 +146,7 @@ void exibirTelaEscolherModoJogo(int selected) {
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *t2 = "SOBRE O MODO SELECIONADO";
+  const char *t2 = _("SOBRE O MODO SELECIONADO");
   int p_t2 = (116 - visible_strlen(t2)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t2; i++)
@@ -173,8 +173,8 @@ void exibirTelaEscolherModoJogo(int selected) {
       "  Ao colocar a 4ª peça, a mais antiga desaparece automaticamente."};
 
   for (int i = 0; i < 6; i++) {
-    printf("      ║    │%s", desc_lines[i]);
-    for (int j = 0; j < 116 - visible_strlen(desc_lines[i]); j++)
+    printf("      ║    │%s", _(desc_lines[i]));
+    for (int j = 0; j < 116 - visible_strlen(_(desc_lines[i])); j++)
       printf(" ");
     printf("│    ║\n");
   }
@@ -190,7 +190,7 @@ void exibirTelaEscolherModoJogo(int selected) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
@@ -246,8 +246,8 @@ void exibirTelaEscolherTipoPartida(int selected) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • CONFIGURAR PARTIDA",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("CONFIGURAR PARTIDA"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -265,7 +265,7 @@ void exibirTelaEscolherTipoPartida(int selected) {
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "TIPO DE PARTIDA";
+  const char *title1 = _("TIPO DE PARTIDA");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -282,7 +282,7 @@ void exibirTelaEscolherTipoPartida(int selected) {
          "                                                           │    ║\n");
 
   const char *desc1 =
-      "  Escolha como será definida a vitória antes de iniciar o jogo.";
+      _("  Escolha como será definida a vitória antes de iniciar o jogo.");
   printf("      ║    │%s", desc1);
   for (int i = 0; i < 116 - visible_strlen(desc1); i++)
     printf(" ");
@@ -303,7 +303,7 @@ void exibirTelaEscolherTipoPartida(int selected) {
   for (int i = 0; i < 4; i++) {
     if (selected == i) {
       char formatado[100];
-      snprintf(formatado, sizeof(formatado), "▶ %s ◀", opts[i]);
+      snprintf(formatado, sizeof(formatado), "▶ %s ◀", _(opts[i]));
       int p_opt = 9; // Fix string offset for '[' to be at col 11
 
       printf("      ║    │                         "
@@ -331,8 +331,8 @@ void exibirTelaEscolherTipoPartida(int selected) {
       printf(" ");                                     // border space (1)
       for (int j = 0; j < p_opt; j++)
         printf(" ");
-      printf("%s", opts[i]);
-      for (int j = 0; j < 50 - visible_strlen(opts[i]) - p_opt; j++)
+      printf("%s", _(opts[i]));
+      for (int j = 0; j < 50 - visible_strlen(_(opts[i])) - p_opt; j++)
         printf(" ");
       printf(" "); // border space (1)
       printf("                                       │    ║\n"); // 39 spaces
@@ -351,7 +351,7 @@ void exibirTelaEscolherTipoPartida(int selected) {
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *t2 = "SOBRE O MODO SELECIONADO";
+  const char *t2 = _("SOBRE O MODO SELECIONADO");
   int p_t2 = (116 - visible_strlen(t2)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t2; i++)
@@ -373,8 +373,8 @@ void exibirTelaEscolherTipoPartida(int selected) {
       "  MELHOR DE 5: vence quem conquistar 3 vitórias primeiro.",  ""};
 
   for (int i = 0; i < 6; i++) {
-    printf("      ║    │%s", desc_lines[i]);
-    for (int j = 0; j < 116 - visible_strlen(desc_lines[i]); j++)
+    printf("      ║    │%s", _(desc_lines[i]));
+    for (int j = 0; j < 116 - visible_strlen(_(desc_lines[i])); j++)
       printf(" ");
     printf("│    ║\n");
   }
@@ -390,7 +390,7 @@ void exibirTelaEscolherTipoPartida(int selected) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
@@ -445,8 +445,8 @@ void exibirTelaConfigurarJogadores(int jogadorNum) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • CONFIGURAÇÃO DE JOGADORES",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("CONFIGURAÇÃO DE JOGADORES"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -464,7 +464,7 @@ void exibirTelaConfigurarJogadores(int jogadorNum) {
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "CONFIGURAR JOGADORES";
+  const char *title1 = _("CONFIGURAR JOGADORES");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -481,7 +481,7 @@ void exibirTelaConfigurarJogadores(int jogadorNum) {
          "                                                           │    ║\n");
 
   const char *desc1 =
-      "  Informe os nomes dos participantes para iniciar a partida.";
+      _("  Informe os nomes dos participantes para iniciar a partida.");
   const char *desc2 = "  O Jogador 1 utilizará o símbolo X e o Jogador 2 "
                       "utilizará o símbolo O.";
   printf("      ║    │%s", desc1);
@@ -544,7 +544,7 @@ void exibirTelaConfigurarJogadores(int jogadorNum) {
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *next_t = "PRÓXIMA ETAPA";
+  const char *next_t = _("PRÓXIMA ETAPA");
   int p_nt = (116 - visible_strlen(next_t)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_nt; i++)
@@ -579,7 +579,7 @@ void exibirTelaConfigurarJogadores(int jogadorNum) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
@@ -658,8 +658,8 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • CONFIRMAÇÃO DE JOGADORES",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("CONFIRMAÇÃO DE JOGADORES"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -677,7 +677,7 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "NOMES REGISTRADOS";
+  const char *title1 = _("NOMES REGISTRADOS");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -711,7 +711,7 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
   printf("      ║    │                                                         "
          "                                                           │    ║\n");
 
-  const char *desc1 = "  Confira os nomes antes de iniciar a partida.";
+  const char *desc1 = _("  Confira os nomes antes de iniciar a partida.");
   printf("      ║    │%s", desc1);
   for (int i = 0; i < 116 - visible_strlen(desc1); i++)
     printf(" ");
@@ -723,7 +723,7 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *title2 = "CONFIRMAR AÇÃO";
+  const char *title2 = _("CONFIRMAR AÇÃO");
   int p_t2 = (116 - visible_strlen(title2)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t2; i++)
@@ -746,7 +746,7 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
   for (int i = 0; i < 3; i++) {
     if (selected == i) {
       char formatado[100];
-      snprintf(formatado, sizeof(formatado), "▶ %s ◀", opts[i]);
+
       int p_opt =
           9; // align all selected items so their `[` starts at column 11
 
@@ -775,8 +775,8 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
       printf(" ");                                     // border space (1)
       for (int j = 0; j < p_opt; j++)
         printf(" ");
-      printf("%s", opts[i]);
-      for (int j = 0; j < 50 - visible_strlen(opts[i]) - p_opt; j++)
+      printf("%s", _(opts[i]));
+      for (int j = 0; j < 50 - visible_strlen(_(opts[i])) - p_opt; j++)
         printf(" ");
       printf(" "); // border space (1)
       printf("                                       │    ║\n"); // 39 spaces
@@ -800,7 +800,7 @@ void exibirTelaConfirmarJogadores(const char *jogadorX, const char *jogadorO,
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
@@ -856,8 +856,8 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info),
-           "v%s • SORTEIO DO PRIMEIRO JOGADOR", GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("SORTEIO DO PRIMEIRO JOGADOR"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -875,7 +875,7 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "RESULTADO DO SORTEIO";
+  const char *title1 = _("RESULTADO DO SORTEIO");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -891,7 +891,8 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
   printf("      ║    │                                                         "
          "                                                           │    ║\n");
 
-  const char *desc1 = "  CADA JOGADOR LANÇOU UM DADO PARA DEFINIR QUEM COMEÇA.";
+  const char *desc1 =
+      _("  CADA JOGADOR LANÇOU UM DADO PARA DEFINIR QUEM COMEÇA.");
   int p_d1 = (116 - visible_strlen(desc1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_d1; i++)
@@ -984,7 +985,7 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *t_sym = "ESCOLHA O SEU SÍMBOLO";
+  const char *t_sym = _("ESCOLHA O SEU SÍMBOLO");
   int p_sym = (116 - visible_strlen(t_sym)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_sym; i++)
@@ -1020,7 +1021,7 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
     for (int i = 0; i < 2; i++) {
       if (selected == i) {
         char formatado[100];
-        snprintf(formatado, sizeof(formatado), "▶ %s ◀", opts[i]);
+
         int p_opt = 16;
 
         printf(
@@ -1051,8 +1052,8 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
         printf(" ");                                     // border space (1)
         for (int j = 0; j < p_opt; j++)
           printf(" ");
-        printf("%s", opts[i]);
-        for (int j = 0; j < 50 - visible_strlen(opts[i]) - p_opt; j++)
+        printf("%s", _(opts[i]));
+        for (int j = 0; j < 50 - visible_strlen(_(opts[i])) - p_opt; j++)
           printf(" ");
         printf(" "); // border space (1)
         printf("                                       │    ║\n"); // 39 spaces
@@ -1077,13 +1078,13 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
   printf("║\n");
 
-  const char *ctrl2 = "      • Use ↑ ↓ para navegar e ENTER para selecionar";
+  const char *ctrl2 = _("      • Use ↑ ↓ para navegar e ENTER para selecionar");
   if (selected == -1)
     ctrl2 = "      • Pressione ENTER para continuar";
 
@@ -1097,12 +1098,6 @@ void exibirTelaSorteio(int dadoJogador1, int dadoJogador2, const char *jogador1,
          "══════════════════════════════════════════════════════════╝\n");
   printf("\033[0m");
 }
-
-
-
-
-
-
 
 void exibirInterfaceJogo(const GameState *game, const int *winning_line_indices,
                          const char *mensagemInfo, int selected_cell) {
@@ -1133,8 +1128,8 @@ void exibirInterfaceJogo(const GameState *game, const int *winning_line_indices,
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • JOGO DA VEIA EM ANDAMENTO",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("JOGO DA VEIA EM ANDAMENTO"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -1254,7 +1249,7 @@ void exibirInterfaceJogo(const GameState *game, const int *winning_line_indices,
       (game->jogadorAtual == 'X') ? game->nomeJogadorX : game->nomeJogadorO;
   char text_turno[100];
   char text_turno_2[100] = "";
-  const char *titulo_turno = "TURNO ATUAL";
+  const char *titulo_turno = _("TURNO ATUAL");
   if (mensagemInfo && strlen(mensagemInfo) > 0) {
     snprintf(text_turno, sizeof(text_turno), "%s", mensagemInfo);
     titulo_turno = "RESULTADO";
@@ -1334,8 +1329,6 @@ void exibirInterfaceJogo(const GameState *game, const int *winning_line_indices,
 
   printf("\n");
 }
-
-
 
 void animarVitoria(const GameState *game, const int *winning_line_indices) {
   for (int i = 0; i < 6; i++) {
@@ -2191,8 +2184,8 @@ void exibirTelaRanking(void) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • RANKING DOS JOGADORES",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("RANKING DOS JOGADORES"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -2210,7 +2203,7 @@ void exibirTelaRanking(void) {
          "┌────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────┐    ║\n");
 
-  const char *title1 = "MELHORES JOGADORES";
+  const char *title1 = _("MELHORES JOGADORES");
   int p_t1 = (116 - visible_strlen(title1)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t1; i++)
@@ -2294,7 +2287,7 @@ void exibirTelaRanking(void) {
          "│────────────────────────────────────────────────────────────────────"
          "────────────────────────────────────────────────│    ║\n");
 
-  const char *title2 = "DESTAQUE DO RANKING";
+  const char *title2 = _("DESTAQUE DO RANKING");
   int p_t2 = (116 - visible_strlen(title2)) / 2;
   printf("      ║    │");
   for (int i = 0; i < p_t2; i++)
@@ -2354,7 +2347,7 @@ void exibirTelaRanking(void) {
          "                                                           │    ║\n");
 
   const char *desc2 =
-      "  Continue jogando para subir de posição e conquistar mais medalhas.";
+      _("  Continue jogando para subir de posição e conquistar mais medalhas.");
   printf("      ║    │%s", desc2);
   for (int i = 0; i < 116 - visible_strlen(desc2); i++)
     printf(" ");
@@ -2371,14 +2364,14 @@ void exibirTelaRanking(void) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int p = 0; p < 126 - visible_strlen(ctrl1); p++)
     printf(" ");
   printf("║\n");
 
   const char *ctrl2 =
-      "      • Pressione ENTER, ESC ou Q para retornar ao Menu Principal";
+      _("      • Pressione ENTER, ESC ou Q para retornar ao Menu Principal");
   printf("      ║%s", ctrl2);
   for (int p = 0; p < 126 - visible_strlen(ctrl2); p++)
     printf(" ");
@@ -2443,7 +2436,6 @@ void exibirMenuInterativo(int selected, const GameState *game) {
   printf("      ║    ├────────────────────────────┤    "
          "├────────────────────────────────────────────────────────────────────"
          "──────────────┤    ║\n");
-
   const char *options[] = {"JOGAR",
                            "INSTRUÇÕES OFICIAIS",
                            "CRÉDITOS DO PROJETO",
@@ -2451,7 +2443,8 @@ void exibirMenuInterativo(int selected, const GameState *game) {
                            "SELEÇÃO DE TEMA",
                            "NUVEM: SAVE / LOAD",
                            "RANKING GLOBAL",
-                           "SAIR DO SISTEMA"};
+                           "SAIR DO SISTEMA",
+                           "IDIOMA"};
 
   const char *left_col[21] = {
       "                            ",    "          /)  (\\            ",
@@ -2473,7 +2466,7 @@ void exibirMenuInterativo(int selected, const GameState *game) {
   }
 
   int current_line = 3;
-  for (int i = 1; i <= 8; i++) {
+  for (int i = 1; i <= 9; i++) {
     if (i == selected) {
       char padding[50] = "";
       int len = visible_strlen(options[i - 1]);
@@ -2533,7 +2526,7 @@ void exibirMenuInterativo(int selected, const GameState *game) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DO MENU ]";
+  const char *ctrl1 = _("      [ CONTROLES DO MENU ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -2678,7 +2671,7 @@ void exibirTelaInstrucoes(void) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -2830,7 +2823,7 @@ void exibirTelaCreditos(void) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -2991,7 +2984,7 @@ void exibirTelaReferencia(void) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -3064,8 +3057,8 @@ void exibirTelaTemas(int preview_tema) {
   printf("      ║                                                              "
          "                                                                ║\n");
 
-  const char *instr =
-      "Use ↑ ↓ ← → para navegar entre os temas. Pressione ENTER para aplicar.";
+  const char *instr = _(
+      "Use ↑ ↓ ← → para navegar entre os temas. Pressione ENTER para aplicar.");
   int instr_len = visible_strlen(instr);
   int instr_pad_left = (126 - instr_len) / 2;
   int instr_pad_right = 126 - instr_len - instr_pad_left;
@@ -3162,7 +3155,7 @@ void exibirTelaTemas(int preview_tema) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ SELEÇÃO DE TEMA ]";
+  const char *ctrl1 = _("      [ SELEÇÃO DE TEMA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -3216,8 +3209,8 @@ void exibirTelaSaveLoad(int selected_option) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • SALVAR / CARREGAR JOGO",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("SALVAR / CARREGAR JOGO"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -3260,8 +3253,15 @@ void exibirTelaSaveLoad(int selected_option) {
   printf("      ║    │                                                         "
          "                                                           │    ║\n");
 
-  const char *options[] = {"[1] SALVAR JOGO ATUAL", "[2] CARREGAR JOGO SALVO",
-                           "[3] DELETAR JOGO SALVO"};
+  const char *options[] = {"JOGAR",
+                           "INSTRUÇÕES OFICIAIS",
+                           "CRÉDITOS DO PROJETO",
+                           "REFERÊNCIAS TÉCNICAS",
+                           "SELEÇÃO DE TEMA",
+                           "NUVEM: SAVE / LOAD",
+                           "RANKING GLOBAL",
+                           "SAIR DO SISTEMA",
+                           "IDIOMA"};
 
   for (int i = 0; i < 3; i++) {
     if (selected_option == i + 1) {
@@ -3330,7 +3330,7 @@ void exibirTelaSaveLoad(int selected_option) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -3384,8 +3384,8 @@ void exibirTelaEscolherSalvamento(int selected) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • SALVAR PARTIDA ATUAL",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("SALVAR PARTIDA ATUAL"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -3492,7 +3492,7 @@ void exibirTelaEscolherSalvamento(int selected) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -3547,7 +3547,8 @@ void exibirSucessoSalvamento(const char *nomeSalvamento) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • JOGO SALVO", GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("JOGO SALVO"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -3607,7 +3608,7 @@ void exibirSucessoSalvamento(const char *nomeSalvamento) {
          "══════════════════════════════════════════════════════════╣\n");
 
   const char *ctrl1 =
-      "                              Pressione ENTER para continuar...";
+      _("                              Pressione ENTER para continuar...");
   int p = (126 - visible_strlen(ctrl1)) / 2;
   printf("      ║");
   for (int i = 0; i < p; i++)
@@ -3656,8 +3657,8 @@ void exibirTelaNovoSalvamento(void) {
          "                                                                ║\n");
 
   char header_info[200];
-  snprintf(header_info, sizeof(header_info), "v%s • NOVO SALVAMENTO",
-           GAME_VERSION);
+  snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+           _("NOVO SALVAMENTO"));
   int info_len = visible_strlen(header_info);
   int pad_left = (126 - info_len - 2) / 2;
   int pad_right = 126 - info_len - 2 - pad_left;
@@ -3743,7 +3744,7 @@ void exibirTelaNovoSalvamento(void) {
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");
@@ -3803,14 +3804,14 @@ void exibirTelaSavesList(SaveInfo *saves, int num_saves, int selected_idx,
 
   char header_info[200];
   if (mode == 0) {
-    snprintf(header_info, sizeof(header_info), "v%s • SOBRESCREVER SALVAMENTO",
-             GAME_VERSION);
+    snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+             _("SOBRESCREVER SALVAMENTO"));
   } else if (mode == 1) {
-    snprintf(header_info, sizeof(header_info), "v%s • CARREGAR SALVAMENTO",
-             GAME_VERSION);
+    snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+             _("CARREGAR SALVAMENTO"));
   } else {
-    snprintf(header_info, sizeof(header_info), "v%s • EXCLUIR SALVAMENTO",
-             GAME_VERSION);
+    snprintf(header_info, sizeof(header_info), "v%s • %s", GAME_VERSION,
+             _("EXCLUIR SALVAMENTO"));
   }
 
   int info_len = visible_strlen(header_info);
@@ -4046,7 +4047,7 @@ void exibirTelaSavesList(SaveInfo *saves, int num_saves, int selected_idx,
          "╠════════════════════════════════════════════════════════════════════"
          "══════════════════════════════════════════════════════════╣\n");
 
-  const char *ctrl1 = "      [ CONTROLES DA TELA ]";
+  const char *ctrl1 = _("      [ CONTROLES DA TELA ]");
   printf("      ║%s", ctrl1);
   for (int i = 0; i < 126 - visible_strlen(ctrl1); i++)
     printf(" ");

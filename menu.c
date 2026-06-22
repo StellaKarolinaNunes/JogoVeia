@@ -4,6 +4,8 @@
 #include "game.h"
 #include "file_manager.h"
 #include "theme.h"
+#include "i18n.h"
+#include <stdlib.h>
 
 void funcaoInstrucoes(void) {
     exibirTelaInstrucoes();
@@ -37,6 +39,18 @@ void funcaoReferencia(void) {
 
 void funcaoTema(void) {
     escolherTema();
+}
+
+void funcaoIdioma(void) {
+    // Display language selection UI and update current language
+    change_language();
+    // Persist the new language setting
+    salvarConfiguracoes();
+    // Optionally provide visual feedback (brief pause)
+    limparTela();
+    aplicarTema(tema_ativo);
+    printf("\n");
+    // Return to main menu after language change
 }
 
 void funcaoSaveLoad(GameState* game) {
@@ -229,6 +243,7 @@ void funcaoSair(void) {
     
     printf("\033[0m"); // reset de cor
     esperarEnter();
+    exit(0);
 }
 
 
@@ -245,12 +260,12 @@ void menuPrincipal(GameState* game) {
         
         switch (tecla) {
             case KEY_UP:
-                if (opcaoSelecionada == 1) opcaoSelecionada = 8;
+                if (opcaoSelecionada == 1) opcaoSelecionada = 9;
                 else opcaoSelecionada--;
                 break;
                 
             case KEY_DOWN:
-                if (opcaoSelecionada == 8) opcaoSelecionada = 1;
+                if (opcaoSelecionada == 9) opcaoSelecionada = 1;
                 else opcaoSelecionada++;
                 break;
                 
@@ -279,7 +294,10 @@ void menuPrincipal(GameState* game) {
                         break;
                     case 8:
                         funcaoSair();
-                        return; // Sai do programa
+                        break;
+                    case 9:
+                        funcaoIdioma();
+                        break;
                 }
                 break;
                 

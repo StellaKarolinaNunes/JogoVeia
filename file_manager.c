@@ -1,5 +1,6 @@
 #include "file_manager.h"
 #include "ui.h"
+#include "i18n.h"
 #include "utils.h"
 
 #define SETTINGS_FILE "settings.cfg"
@@ -107,6 +108,7 @@ void salvarConfiguracoes(void) {
   FILE *file = abrirArquivo(SETTINGS_FILE, "w");
   if (file != NULL) {
     fprintf(file, "tema_ativo:%d\n", tema_ativo);
+  fprintf(file, "idioma:%d\n", current_language);
     fecharArquivo(file);
   }
 }
@@ -114,9 +116,15 @@ void salvarConfiguracoes(void) {
 void carregarConfiguracoes(void) {
   FILE *file = abrirArquivo(SETTINGS_FILE, "r");
   if (file != NULL) {
-    if (fscanf(file, "tema_ativo:%d", &tema_ativo) != 1) {
+    if (fscanf(file, " tema_ativo:%d", &tema_ativo) != 1) {
       tema_ativo = 0;
     }
+    // Ler idioma salvo
+    if (fscanf(file, " idioma:%d", &current_language) != 1) {
+      current_language = LANG_PT; // padrão português
+    }
+
+
     fecharArquivo(file);
   }
 }

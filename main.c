@@ -1,7 +1,7 @@
 #include "config.h"
-#include "utils.h"
 #include "theme.h"
 #include "file_manager.h"
+#include "i18n.h"
 #include "menu.h"
 
 void configurarSistema(void) {
@@ -24,6 +24,7 @@ int main() {
     strcpy(current_game_state.ultimoVencedor, "Nenhum");
     
     carregarConfiguracoes();
+    init_i18n();
     configurarSistema();
     carregarTemas();
     carregarRanking();

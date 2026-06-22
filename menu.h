@@ -7,9 +7,10 @@ void funcaoInstrucoes(void);
 void funcaoCreditos(void);
 void funcaoReferencia(void);
 void funcaoTema(void);
-void funcaoSaveLoad(GameState* game);
+void funcaoSaveLoad(GameState *game);
 void funcaoRanking(void);
 void funcaoSair(void);
-void menuPrincipal(GameState* game);
+void funcaoIdioma(void);
+void menuPrincipal(GameState *game);
 
 #endif // MENU_H
