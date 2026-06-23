@@ -3,7 +3,7 @@
     <br />
     <br />
     <a href="https://github.com/StellaKarolinaNunes/jogo-da-veia">
-     <img src="./assets/banner.png " alt="Jogo da Veia Banner " width="100%">
+     <img src="./assets/menu_principal.png " alt="Jogo da Veia Banner " width="100px">
     </a>
   </h1>
 
