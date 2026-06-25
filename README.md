@@ -90,7 +90,7 @@ aplicando na prática os principais conceitos da linguagem C.
 
 <br>
 
-## Layout da Aplicação
+## imagens
 
 <p align="center">
   <img src="./assets/menu_principal.png" width="45%">
@@ -145,30 +145,11 @@ jogo_veia/
 
 <br>
 
-### Manutenibilidade e Compatibilidade
+ 
 
-- **Problema:** Incompatibilidade de nomes de arquivos entre Windows e Linux
-  (Case Sensitivity).
-- **Causa:** O desenvolvedor original utilizou CamelCase em alguns locais e
-  lower_case em outros, o que causava erros de compilação em sistemas Linux.
-- **Solução:** Padronização rigorosa para `lower_case` em todos os arquivos
-  fonte (.c) e cabeçalhos (.h).
-- **Problema:** Tabuleiro desalinhado após a aplicação de temas coloridos.
-- **Causa:** Os códigos de escape ANSI possuem largura zero no terminal, mas
-  ocupam espaço na contagem de strings do C.
-- **Solução:** Implementação de uma largura fixa para cada célula do tabuleiro,
-  independente da presença de cores.
-- **Problema:** A IA era previsível e permitia vitórias fáceis.
-- **Causa:** Algoritmo baseado apenas em condições `if/else` superficiais.
-- **Solução:** Introdução do algoritmo **Minimax** para a dificuldade "Difícil",
-  tornando-a imbatível matematicamente através da exploração de todas as
-  possibilidades de jogo.
+##  Instalação
 
-<br>
-
-## Instalação
-
-### Pré-requisitos para Rodar jogo da veia na sua maquina
+### Pré-requisitos
 
 - **Compilador C**: Recomendado [GCC](https://gcc.gnu.org/) (versão 9.0 ou
   superior).
@@ -190,7 +171,7 @@ jogo_veia/
 
 <br>
 
-### Instalação Rápida
+###  Passo a Passo
 
 #### 1. Clone o repositório
 
